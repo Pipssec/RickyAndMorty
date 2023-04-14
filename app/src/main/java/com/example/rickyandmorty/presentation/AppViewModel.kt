@@ -16,7 +16,7 @@ class AppViewModel(private val charactersRepository: CharactersRepository) : Vie
     val errorMessage = MutableLiveData<String>()
     private val selectedItemCharacter = MutableLiveData<Characters>()
 
-    fun getMovieList(): LiveData<PagingData<Characters>> {
+    fun getCharactersList(): LiveData<PagingData<Characters>> {
         return charactersRepository.getAllCharacters().cachedIn(viewModelScope)
     }
 

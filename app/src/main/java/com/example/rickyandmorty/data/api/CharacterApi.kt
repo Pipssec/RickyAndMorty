@@ -12,7 +12,14 @@ import retrofit2.http.Query
 
 interface CharacterApi {
     @GET("character/")
-    suspend fun getAllCharacters(@Query("page") pageNumber: Int): Response<CharactersResponse>
+    suspend fun getAllCharacters(
+        @Query("page") page: Int,
+        @Query("name") name: String,
+        @Query("status") status: String,
+        @Query("gender") gender: String
+    ): Response<CharactersResponse>
+
+
 
 
     companion object {

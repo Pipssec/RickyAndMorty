@@ -3,17 +3,23 @@ package com.example.rickyandmorty.data.datasource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickyandmorty.data.api.CharacterApi
+import com.example.rickyandmorty.data.api.CharacterApi.Companion.characterApi
 import com.example.rickyandmorty.domain.model.Characters
 
-class CharacterDataSource(private val characterApi: CharacterApi) : PagingSource<Int, Characters>() {
+class CharacterDataSource(
+                          private val name: String,
+                          private val status: String,
+                          private val gender: String
+) : PagingSource<Int, Characters>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Characters> {
         try {
             val currentLoadingPageKey = params.key ?: 1
-            val response = characterApi.getAllCharacters(currentLoadingPageKey)
+            val response = CharacterApi.getInstance()
             val responseData = mutableListOf<Characters>()
-            val data = response.body()?.results ?: emptyList()
-            responseData.addAll(data)
+//            val data = response.body()?.results ?: emptyList()
+            (response.getAllCharacters(currentLoadingPageKey,name, status, gender)).body()
+                ?.let { responseData.addAll(it.results) }
 
             val prevKey = if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1
 
@@ -28,10 +34,7 @@ class CharacterDataSource(private val characterApi: CharacterApi) : PagingSource
     }
 
     override fun getRefreshKey(state: PagingState<Int, Characters>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-        }
+        return null
     }
 
 }

@@ -9,16 +9,20 @@ import com.example.rickyandmorty.data.api.CharacterApi
 import com.example.rickyandmorty.data.datasource.CharacterDataSource
 import com.example.rickyandmorty.domain.model.Characters
 
-class CharactersRepository(private val characterApi: CharacterApi) {
+class CharactersRepository(private val characterApi: CharacterApi,
+                           private val name: String,
+                           private val status: String,
+                           private val gender: String
+                           ) {
     fun getAllCharacters(): LiveData<PagingData<Characters>>{
         return Pager(
             config = PagingConfig(
                 pageSize = 42,
                 enablePlaceholders = false,
-                initialLoadSize = 2
+                initialLoadSize = 1
             ),
             pagingSourceFactory = {
-                CharacterDataSource(characterApi)
+                CharacterDataSource( name, status, gender)
             }
             , initialKey = 1
         ).liveData
