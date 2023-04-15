@@ -3,7 +3,6 @@ package com.example.rickyandmorty.data.datasource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickyandmorty.data.api.CharacterApi
-import com.example.rickyandmorty.data.api.CharacterApi.Companion.characterApi
 import com.example.rickyandmorty.domain.model.Characters
 
 class CharacterDataSource(

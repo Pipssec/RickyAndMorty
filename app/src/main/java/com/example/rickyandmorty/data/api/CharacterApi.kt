@@ -1,9 +1,10 @@
 package com.example.rickyandmorty.data.api
 
+
 import com.example.rickyandmorty.data.response.CharactersResponse
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -18,8 +19,6 @@ interface CharacterApi {
         @Query("status") status: String,
         @Query("gender") gender: String
     ): Response<CharactersResponse>
-
-
 
 
     companion object {
