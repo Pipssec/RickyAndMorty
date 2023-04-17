@@ -1,17 +1,18 @@
 package com.example.rickyandmorty.data.api
 
 
-import com.example.rickyandmorty.data.response.CharactersResponse
+import com.example.rickyandmorty.data.response.characters.CharactersResponse
+import com.example.rickyandmorty.data.response.episodes.EpisodesResponse
+import com.example.rickyandmorty.data.response.location.LocationResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface CharacterApi {
+interface NetworkApi {
     @GET("character/")
     suspend fun getAllCharacters(
         @Query("page") page: Int,
@@ -20,12 +21,25 @@ interface CharacterApi {
         @Query("gender") gender: String
     ): Response<CharactersResponse>
 
+    @GET("location/")
+    suspend fun getAllLocation(
+        @Query("page") page: Int,
+        @Query("name") name: String,
+        @Query("type") type: String,
+        @Query("dimension") dimension: String
+    ): Response<LocationResponse>
 
+    @GET("episode/")
+    suspend fun getAllEpisode(
+        @Query("page") page: Int,
+        @Query("name") name: String,
+        @Query("episode") episode: String
+    ): Response<EpisodesResponse>
     companion object {
 
-        var characterApi: CharacterApi? = null
-        fun getInstance(): CharacterApi {
-            if (characterApi == null) {
+        var networkApi: NetworkApi? = null
+        fun getInstance(): NetworkApi {
+            if (networkApi == null) {
                 val baseurl = "https://rickandmortyapi.com/api/"
                 val loginInterceptor = HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -37,9 +51,9 @@ interface CharacterApi {
                     .client(okHttpClient)
                     .addConverterFactory(MoshiConverterFactory.create())
                     .build()
-                characterApi = retrofit.create(CharacterApi::class.java)
+                networkApi = retrofit.create(NetworkApi::class.java)
             }
-            return characterApi!!
+            return networkApi!!
         }
     }
 }

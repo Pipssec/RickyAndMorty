@@ -4,10 +4,10 @@
     <string name="menu_locations">Локации</string>
     <string name="menu_episodes">Эпизоды</string>
     <string name="input_character_find">Поиск</string>
-    <string name="find_character">Поиск</string>
-    <string name="name_example">Рик</string>
+    <string name="name_example">Example</string>
     <string name="alive">Живой</string>
     <string name="type">Вид:</string>
+    <string name="type_2">Тип:</string>
     <string name="gender">Пол:</string>
     <string name="location">Местоположение</string>
     <string name="earth">Земля</string>
@@ -17,12 +17,19 @@
     <string name="status">Статус:</string>
     <string name="man_ex2">Мужской</string>
     <string name="empty">TextView</string>
-    <string name="heroes">Персонажи</string>
-    <string name="locations">Локации</string>
-    <string name="episodes">Эпизоды</string>
-    <string name="search_ex">Поиск...</string>
     <string name="alive_ex">Alive</string>
     <string name="dead_ex">Dead</string>
     <string name="origin">Происхождение</string>
     <string name="tv_ex">TextView</string>
+    <string name="error_parameters">Выберите параметры</string>
+    <string name="filter">Фильтр</string>
+    <string name="apply">Применить</string>
+    <string name="status_unknow">Unknown</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="genderless">Genderless</string>
+    <string name="unknown">Unknown</string>
+    <string name="dimension">Измерение:</string>
+    <string name="episode">Номер эпизода:</string>
+    <string name="air_date">Дата релиза:</string>
 </resources>

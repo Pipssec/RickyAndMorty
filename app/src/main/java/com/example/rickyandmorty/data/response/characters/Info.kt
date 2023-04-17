@@ -1,4 +1,4 @@
-package com.example.rickyandmorty.data.response
+package com.example.rickyandmorty.data.response.characters
 
 data class Info(
     val count: Int,

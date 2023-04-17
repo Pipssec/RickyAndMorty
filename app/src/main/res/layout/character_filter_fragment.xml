@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvInfoFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/filter"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvInfoStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/status"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoFilter" />
+
+    <TextView
+        android:id="@+id/tvInfoGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/gender"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoStatus"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup_status" />
+
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/apply"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup_gender"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoStatus"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoStatus"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_alive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alive_ex" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_dead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dead_ex" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_unknown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_unknow" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup_gender"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:singleSelection="true"
+        app:layout_constraintEnd_toEndOf="@+id/chipGroup_status"
+        app:layout_constraintStart_toStartOf="@+id/tvInfoGender"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoGender">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/female" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_genderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/genderless" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_unknown_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unknown" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <ImageView
+        android:id="@+id/btnCloseDialog"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvInfoFilter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvInfoFilter"
+        app:layout_constraintVertical_bias="0.56"
+        app:srcCompat="@drawable/baseline_close_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

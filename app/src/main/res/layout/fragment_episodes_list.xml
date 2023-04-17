@@ -4,34 +4,24 @@
     android:layout_height="match_parent"
     android:background="@color/background_item"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/btnCharactersFilter"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@color/white"
-        android:src="@drawable/baseline_filter_alt_24"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imListEpisodes"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/searchInListCharacters"
-        app:layout_constraintBottom_toBottomOf="@id/searchInListCharacters"/>
-    <SearchView
-        android:id="@+id/searchInListCharacters"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="@string/input_character_find"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnCharactersFilter"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:src="@drawable/earth2" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvListCharacters"
+        android:id="@+id/rvListEpisodes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/cardview_shadow_end_color"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        app:layout_constraintTop_toBottomOf="@+id/searchInListCharacters"
+        app:layout_constraintTop_toTopOf="@id/imListEpisodes"
         android:paddingTop="12dp"/>
     <ProgressBar
         android:id="@+id/progressDialog"
@@ -42,4 +32,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:indeterminateTint="@color/background"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

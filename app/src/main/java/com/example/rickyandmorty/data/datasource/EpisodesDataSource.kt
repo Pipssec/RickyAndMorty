@@ -3,20 +3,19 @@ package com.example.rickyandmorty.data.datasource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickyandmorty.data.api.NetworkApi
-import com.example.rickyandmorty.domain.model.characters.Characters
+import com.example.rickyandmorty.domain.model.episodes.Episodes
 
-class CharacterDataSource(
-                          private val name: String,
-                          private val status: String,
-                          private val gender: String
-) : PagingSource<Int, Characters>() {
+class EpisodesDataSource(
+        private val name: String,
+        private val episode: String
+) : PagingSource<Int, Episodes>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Characters> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Episodes> {
         try {
             val currentLoadingPageKey = params.key ?: 1
             val response = NetworkApi.getInstance()
-            val responseData = mutableListOf<Characters>()
-            (response.getAllCharacters(currentLoadingPageKey,name, status, gender)).body()
+            val responseData = mutableListOf<Episodes>()
+            (response.getAllEpisode(currentLoadingPageKey,name, episode)).body()
                 ?.let { responseData.addAll(it.results) }
             if(responseData.size == 0){
                 val exception: Exception = TypeCastException("Item not found")
@@ -35,7 +34,7 @@ class CharacterDataSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Characters>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Episodes>): Int? {
         return null
     }
 }
