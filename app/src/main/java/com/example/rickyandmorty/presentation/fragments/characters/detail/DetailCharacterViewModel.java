@@ -14,7 +14,7 @@ import java.util.Objects;
 public class DetailCharacterViewModel extends ViewModel {
      public MutableLiveData<Characters> selectedItemCharacter = new MutableLiveData<>();
      public List<String> listOfEpisodes = new ArrayList<>();
-     public String episodesIds = getEpisodes();
+     public String episodesIds;
 
 
     public void onClickItemCharacter(Characters character) {
@@ -29,18 +29,18 @@ public class DetailCharacterViewModel extends ViewModel {
         return selectedItemCharacter;
     }
 
-    public String getEpisodes(){
+    public void getEpisodes(){
         String str1;
         String str2;
         String result = "";
         if(!listOfEpisodes.isEmpty()){
             for(String episode : listOfEpisodes){
-                str1 = episode.substring(41);
-                str2 = str1.replace('\"',',');
-                result = result+str2;
+                str1 = episode.substring(40);
+//                str2 = str1.replace('\"',',');
+                result = result+str1+",";
                 Log.d("EpisodesResult", result);
             }
         }
-        return result;
+        episodesIds = result;
     }
 }

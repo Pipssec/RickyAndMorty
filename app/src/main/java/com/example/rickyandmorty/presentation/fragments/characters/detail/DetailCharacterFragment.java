@@ -61,6 +61,7 @@ public class DetailCharacterFragment extends Fragment {
 
                 };
                 detailCharacterViewModel.getSelectedItemCharacter().observe(getViewLifecycleOwner(), observer);
+                detailCharacterViewModel.getEpisodes();
                 Log.d("getEpisodesHere", detailCharacterViewModel.episodesIds);
         }
 
