@@ -1,4 +1,4 @@
-package com.example.rickyandmorty.presentation.fragments.characters.viewmodels
+package com.example.rickyandmorty.presentation.fragments.characters.list
 
 
 import androidx.lifecycle.MutableLiveData

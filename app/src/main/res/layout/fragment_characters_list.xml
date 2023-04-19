@@ -9,7 +9,6 @@
         android:id="@+id/btnCharactersFilter"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@color/white"
         android:src="@drawable/baseline_filter_alt_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/searchInListCharacters"
@@ -23,7 +22,8 @@
         android:queryHint="@string/input_character_find"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnCharactersFilter"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListCharacters"
         android:layout_width="match_parent"

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.databinding.ActivityMainBinding
-import com.example.rickyandmorty.presentation.fragments.characters.ListCharactersFragment
+import com.example.rickyandmorty.presentation.fragments.characters.list.ListCharactersFragment
 import com.example.rickyandmorty.presentation.fragments.episodes.ListEpisodesFragment
 import com.example.rickyandmorty.presentation.fragments.locations.ListLocationsFragment
 

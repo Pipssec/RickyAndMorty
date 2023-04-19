@@ -1,4 +1,4 @@
-package com.example.rickyandmorty.presentation.fragments.characters
+package com.example.rickyandmorty.presentation.fragments.characters.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -18,8 +19,9 @@ import com.example.rickyandmorty.R
 import com.example.rickyandmorty.databinding.FragmentCharactersListBinding
 import com.example.rickyandmorty.domain.model.characters.Characters
 import com.example.rickyandmorty.presentation.adapters.CharactersPagingAdapter
-import com.example.rickyandmorty.presentation.fragments.characters.viewmodels.DetailCharacterViewModel
-import com.example.rickyandmorty.presentation.fragments.characters.viewmodels.ListCharactersViewModel
+import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterFragment
+import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +30,7 @@ import kotlinx.coroutines.launch
 class ListCharactersFragment: Fragment(), CharactersPagingAdapter.Listener {
     private lateinit var binding: FragmentCharactersListBinding
     lateinit var viewModelList: ListCharactersViewModel
-    lateinit var viewModelDetail: DetailCharacterViewModel
+    private val viewModelDetail: DetailCharacterViewModel by activityViewModels()
     private var adapter = CharactersPagingAdapter(this)
     private var name: String = ""
     private var status: String = ""
@@ -42,12 +44,12 @@ class ListCharactersFragment: Fragment(), CharactersPagingAdapter.Listener {
     ): View? {
         binding = FragmentCharactersListBinding.inflate(inflater, container, false)
         viewModelList = ViewModelProvider(this)[ListCharactersViewModel::class.java]
-        viewModelDetail = ViewModelProvider(this)[DetailCharacterViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showBotNav()
         binding.rvListCharacters.adapter = adapter
         loadAllCharacters()
         findByName()
@@ -115,6 +117,11 @@ class ListCharactersFragment: Fragment(), CharactersPagingAdapter.Listener {
             openCharacterFilter()
         }
     }
+    private fun showBotNav() {
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
+    }
     private fun openCharacterFilter(){
         val dialogView: View = layoutInflater.inflate(R.layout.character_filter_fragment, null)
         val dialog = BottomSheetDialog(requireContext())
@@ -169,7 +176,11 @@ class ListCharactersFragment: Fragment(), CharactersPagingAdapter.Listener {
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
-            .replace(R.id.containerFragment,DetailCharacterFragment())
+            .replace(R.id.containerFragment,
+                DetailCharacterFragment(
+                    viewModelDetail
+                )
+            )
             .addToBackStack("characters")
             .commit()
     }
