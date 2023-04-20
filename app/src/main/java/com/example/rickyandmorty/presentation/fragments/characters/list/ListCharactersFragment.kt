@@ -18,7 +18,7 @@ import androidx.paging.LoadState
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.databinding.FragmentCharactersListBinding
 import com.example.rickyandmorty.domain.model.characters.Characters
-import com.example.rickyandmorty.presentation.adapters.CharactersPagingAdapter
+import com.example.rickyandmorty.presentation.adapters.character.list.CharactersPagingAdapter
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterFragment
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView

@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.example.rickyandmorty.databinding.FragmentLocationsListBinding
 import com.example.rickyandmorty.domain.model.locations.Locations
-import com.example.rickyandmorty.presentation.adapters.LocationsPagingAdapter
+import com.example.rickyandmorty.presentation.adapters.location.LocationsPagingAdapter
 import com.example.rickyandmorty.presentation.fragments.locations.viewmodels.ListLocationsViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.example.rickyandmorty.databinding.FragmentEpisodesListBinding
 import com.example.rickyandmorty.domain.model.episodes.Episodes
-import com.example.rickyandmorty.presentation.adapters.EpisodesPagingAdapter
+import com.example.rickyandmorty.presentation.adapters.episodes.EpisodesPagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
