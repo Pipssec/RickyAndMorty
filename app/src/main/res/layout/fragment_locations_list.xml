@@ -5,6 +5,15 @@
     android:background="@color/background_item"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/btnLocationsFilter"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/baseline_filter_alt_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/searchInListLocations"
+        app:layout_constraintBottom_toBottomOf="@id/searchInListLocations"/>
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imListLocation"
         android:layout_width="400dp"
@@ -15,6 +24,20 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/earth2" />
 
+    <SearchView
+        android:id="@+id/searchInListLocations"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:iconifiedByDefault="false"
+        android:textStyle="bold"
+        android:textSize="100sp"
+        android:queryHint="@string/input_character_find"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnLocationsFilter"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListLocations"
         android:layout_width="match_parent"
@@ -22,7 +45,7 @@
         android:background="@color/cardview_shadow_end_color"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        app:layout_constraintTop_toTopOf="@id/imListLocation"
+        app:layout_constraintTop_toBottomOf="@id/searchInListLocations"
         android:paddingTop="12dp"/>
     <ProgressBar
         android:id="@+id/progressDialog"

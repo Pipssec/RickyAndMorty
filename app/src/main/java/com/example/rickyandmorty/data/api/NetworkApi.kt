@@ -8,7 +8,6 @@ import com.example.rickyandmorty.domain.model.episodes.Episodes
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -22,8 +21,9 @@ interface NetworkApi {
         @Query("page") page: Int,
         @Query("name") name: String,
         @Query("status") status: String,
-        @Query("gender") gender: String
-    ): Response<CharactersResponse>
+        @Query("gender") gender: String,
+        @Query("species") species: String
+    ): CharactersResponse
 
     @GET("location/")
     suspend fun getAllLocation(
@@ -31,14 +31,14 @@ interface NetworkApi {
         @Query("name") name: String,
         @Query("type") type: String,
         @Query("dimension") dimension: String
-    ): Response<LocationResponse>
+    ): LocationResponse
 
     @GET("episode/")
     suspend fun getAllEpisode(
         @Query("page") page: Int,
         @Query("name") name: String,
         @Query("episode") episode: String
-    ): Response<EpisodesResponse>
+    ): EpisodesResponse
 
     @GET("episode/{id}")
     fun getDetailEpisode(@Path("id") id: String): Observable<List<Episodes>>

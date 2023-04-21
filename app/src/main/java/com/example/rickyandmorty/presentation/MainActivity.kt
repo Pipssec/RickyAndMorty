@@ -7,7 +7,7 @@ import com.example.rickyandmorty.R
 import com.example.rickyandmorty.databinding.ActivityMainBinding
 import com.example.rickyandmorty.presentation.fragments.characters.list.ListCharactersFragment
 import com.example.rickyandmorty.presentation.fragments.episodes.ListEpisodesFragment
-import com.example.rickyandmorty.presentation.fragments.locations.ListLocationsFragment
+import com.example.rickyandmorty.presentation.fragments.locations.list.ListLocationsFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

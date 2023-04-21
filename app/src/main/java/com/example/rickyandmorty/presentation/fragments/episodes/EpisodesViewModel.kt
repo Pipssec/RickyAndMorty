@@ -21,7 +21,7 @@ class EpisodesViewModel: ViewModel() {
 
     fun loadAllEpisodes(name: String, episode: String) {
         episodesFlow = Pager(PagingConfig(pageSize = 1)) {
-            EpisodesDataSource(name,episode)
+            EpisodesDataSource(name = name,episode = episode)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }

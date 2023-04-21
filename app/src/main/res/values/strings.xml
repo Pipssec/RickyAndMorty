@@ -32,4 +32,14 @@
     <string name="dimension">Измерение:</string>
     <string name="episode">Номер эпизода:</string>
     <string name="air_date">Дата релиза:</string>
+    <string name="human_eng">Human</string>
+    <string name="alien_eng">Alien</string>
+    <string name="humanoid_eng">Humanoid</string>
+    <string name="robot_eng">Robot</string>
+    <string name="poopybutthole_eng">Poopybutthole</string>
+    <string name="mythological_eng">Mythological</string>
+    <string name="animal_eng">Animal</string>
+    <string name="cronenberg_eng">Cronenberg</string>
+    <string name="disease_eng">Disease</string>
+    <string name="species">Вид</string>
 </resources>

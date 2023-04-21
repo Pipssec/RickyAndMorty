@@ -3,38 +3,41 @@ package com.example.rickyandmorty.data.datasource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickyandmorty.data.api.NetworkApi
+import com.example.rickyandmorty.data.api.exception.NoDataException
+import com.example.rickyandmorty.data.api.ext.backendException
 import com.example.rickyandmorty.domain.model.episodes.Episodes
 
+
 class EpisodesDataSource(
-        private val name: String,
-        private val episode: String
+    private val networkApi: NetworkApi = NetworkApi.getInstance(),
+    private val name: String,
+    private val episode: String
 ) : PagingSource<Int, Episodes>() {
+
+    companion object {
+        private const val START_PAGE = 1
+    }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Episodes> {
         try {
-            val currentLoadingPageKey = params.key ?: 1
-            val response = NetworkApi.getInstance()
-            val responseData = mutableListOf<Episodes>()
-            (response.getAllEpisode(currentLoadingPageKey,name, episode)).body()
-                ?.let { responseData.addAll(it.results) }
-            if(responseData.size == 0){
-                val exception: Exception = TypeCastException("Item not found")
-                return LoadResult.Error(exception)
+            val page = params.key ?: START_PAGE
+            val response = networkApi.getAllEpisode(page, name, episode)
+            val episodes = response.results
+            if (episodes.isEmpty()) {
+                return LoadResult.Error(NoDataException())
             }
 
-            val prevKey = if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1
-
+            val prevKey = if (page == START_PAGE) null else page - 1
+            val nextKey = if (response.info.next == null) null else page+1
             return LoadResult.Page(
-                data = responseData,
+                data = episodes,
                 prevKey = prevKey,
-                nextKey = currentLoadingPageKey.plus(1)
+                nextKey = nextKey
             )
         } catch (e: Exception) {
-            return LoadResult.Error(e)
+            return LoadResult.Error(backendException(e))
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Episodes>): Int? {
-        return null
-    }
+    override fun getRefreshKey(state: PagingState<Int, Episodes>): Int? = null
 }

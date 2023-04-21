@@ -25,7 +25,7 @@
         android:text="@string/status"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvInfoFilter" />
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <TextView
         android:id="@+id/tvInfoGender"
@@ -36,6 +36,16 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/tvInfoStatus"
         app:layout_constraintTop_toBottomOf="@+id/chipGroup_status" />
+    <TextView
+        android:id="@+id/tvInfoSpecies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/species"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoFilter" />
 
     <Button
         android:id="@+id/btnApply"
@@ -65,18 +75,21 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_alive"
+            style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/alive_ex" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_dead"
+            style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dead_ex" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_unknown"
+            style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/status_unknow" />
@@ -94,28 +107,124 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_female"
+            style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/female" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_male"
+            style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/male" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_genderless"
+            style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/genderless" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_unknown_gender"
+            style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/unknown" />
     </com.google.android.material.chip.ChipGroup>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/chipGroup_status"
+        app:layout_constraintStart_toStartOf="@+id/chipGroup_status"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfoSpecies">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_human"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/human_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_alien"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/alien_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_humanoid"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/humanoid_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_robot"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_unknown_species"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unknown" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_poopybutthole"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/poopybutthole_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_mythological"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mythological_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_animal"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/animal_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_cronenberg"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cronenberg_eng" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_disease"
+                    style="@style/CustomChipStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disease_eng" />
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <ImageView
         android:id="@+id/btnCloseDialog"

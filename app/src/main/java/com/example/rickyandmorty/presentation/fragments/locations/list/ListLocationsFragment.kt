@@ -1,9 +1,10 @@
-package com.example.rickyandmorty.presentation.fragments.episodes
+package com.example.rickyandmorty.presentation.fragments.locations.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -12,45 +13,46 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
-import com.example.rickyandmorty.databinding.FragmentEpisodesListBinding
-import com.example.rickyandmorty.domain.model.episodes.Episodes
-import com.example.rickyandmorty.presentation.adapters.episodes.EpisodesPagingAdapter
+import com.example.rickyandmorty.databinding.FragmentLocationsListBinding
+import com.example.rickyandmorty.domain.model.locations.Locations
+import com.example.rickyandmorty.presentation.adapters.location.LocationsPagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.Listener {
-    private lateinit var binding: FragmentEpisodesListBinding
-    private lateinit var episodesViewModel: EpisodesViewModel
-    private var adapter = EpisodesPagingAdapter(this)
+class ListLocationsFragment: Fragment(), LocationsPagingAdapter.Listener {
+    private lateinit var binding: FragmentLocationsListBinding
+    private var adapter = LocationsPagingAdapter(this)
+    private  lateinit var listLocationsViewModel : ListLocationsViewModel
     private var name = ""
-    private var episode = ""
+    private var type = ""
+    private var dimension = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentEpisodesListBinding.inflate(inflater, container, false)
-        episodesViewModel = ViewModelProvider(this)[EpisodesViewModel::class.java]
+        binding = FragmentLocationsListBinding.inflate(inflater, container, false)
+        listLocationsViewModel = ViewModelProvider(this)[ListLocationsViewModel::class.java]
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvListEpisodes.adapter = adapter
-        loadAllEpisodes()
+        binding.rvListLocations.adapter = adapter
+        loadAllLocations()
         initProgressBar()
-
-
+        findByName()
     }
 
-    private fun loadAllEpisodes() {
-        episodesViewModel.errorMessage.observe(requireActivity()) {
-            Toast.makeText(requireContext(), "Error1", Toast.LENGTH_SHORT).show()
+    private fun loadAllLocations(){
+        listLocationsViewModel.errorMessage.observe(requireActivity()) {
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         }
         lifecycleScope.launch {
-            episodesViewModel.loadAllEpisodes(name, episode)
-            episodesViewModel.episodesFlow.collectLatest(adapter::submitData)
+            listLocationsViewModel.loadLocations(name, type, dimension)
+            listLocationsViewModel.locationFlow.collectLatest(adapter::submitData)
         }
     }
 
@@ -90,8 +92,31 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.Listener {
         }
     }
 
-    override fun onClick(episode: Episodes) {
-        TODO("Not yet implemented")
+    private fun findByName() {
+        binding.rvListLocations.adapter = adapter
+        binding.searchInListLocations.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val name = query.toString()
+                lifecycleScope.launch {
+                    listLocationsViewModel.loadLocations(name, type, dimension)
+                    listLocationsViewModel.locationFlow.collectLatest(adapter::submitData)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val name = newText.toString()
+                lifecycleScope.launch {
+                    listLocationsViewModel.loadLocations(name, type, dimension)
+                    listLocationsViewModel.locationFlow.collectLatest(adapter::submitData)
+                }
+                return true
+            }
+        })
     }
 
+    override fun onClick(location: Locations) {
+        TODO("Not yet implemented")
+    }
 }

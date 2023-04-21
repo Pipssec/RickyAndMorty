@@ -19,9 +19,9 @@ class ListCharactersViewModel() : ViewModel() {
 
     var characterFlow: Flow<PagingData<Characters>> = emptyFlow()
 
-    fun loadCharacters(name: String, status: String, gender: String) {
+    fun loadCharacters(name: String, status: String, gender: String, species: String) {
         characterFlow = Pager(PagingConfig(pageSize = 1)) {
-            CharacterDataSource(name, status, gender)
+            CharacterDataSource(name, status, gender, species)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }
