@@ -48,6 +48,10 @@ interface NetworkApi {
     @GET("character/{id}")
     fun getDetailCharacter(@Path("id") id: String): Observable<List<Characters>>
 
+    @GET("location/")
+    fun getDetailLocation(
+        @Query("name") name: String): Observable<LocationResponse>
+
 
     companion object {
 

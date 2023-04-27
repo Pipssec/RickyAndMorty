@@ -71,22 +71,32 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         })
     }
 
-    private fun initEpisodesFilter(){
-        binding.btnEpisodesFilter.setOnClickListener{
+    private fun initEpisodesFilter() {
+        binding.btnEpisodesFilter.setOnClickListener {
             openEpisodesFilter()
         }
     }
+
     private fun openEpisodesFilter() = with(bindingFilter) {
         val dialog = BottomSheetDialog(requireContext())
-        val seasonsArray = arrayOf("S01", "S02","S03", "S04", "S05")
-        val episodeArray = arrayOf("E01", "E02", "E03","E04","E05","E06","E07","E08","E09","E10","E11")
+        val seasonsArray = arrayOf("S01", "S02", "S03", "S04", "S05")
+        val episodeArray =
+            arrayOf("E01", "E02", "E03", "E04", "E05", "E06", "E07", "E08", "E09", "E10", "E11")
         var selectSeason = ""
         var selectEpisode = ""
-        val seasonsAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,seasonsArray)
-        val episodeAdapter = ArrayAdapter<String>(requireActivity(),android.R.layout.simple_spinner_dropdown_item,episodeArray)
+        val seasonsAdapter = ArrayAdapter<String>(
+            requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            seasonsArray
+        )
+        val episodeAdapter = ArrayAdapter<String>(
+            requireActivity(),
+            android.R.layout.simple_spinner_dropdown_item,
+            episodeArray
+        )
         spinnerSeason.adapter = seasonsAdapter
 
-        spinnerSeason.onItemSelectedListener = object  : AdapterView.OnItemSelectedListener {
+        spinnerSeason.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -95,11 +105,12 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
             ) {
                 selectSeason = seasonsArray[position]
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
         spinnerEpisode.adapter = episodeAdapter
-        spinnerEpisode.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+        spinnerEpisode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -113,7 +124,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
 
         }
 
-        if(bindingFilter.root.parent != null){
+        if (bindingFilter.root.parent != null) {
             (bindingFilter.root.parent as ViewGroup).removeView(bindingFilter.root)
         }
         dialog.setContentView(bindingFilter.root)
@@ -181,9 +192,9 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
     }
 
     override fun onClick(episode: Episodes) {
-       episodesViewModel.onClickItemEpisodes(episode)
+        episodesViewModel.onClickItemEpisodes(episode)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.containerFragment, DetailEpisodesFragment())
+            ?.replace(R.id.containerFragment, DetailEpisodesFragment(episodesViewModel))
             ?.addToBackStack(null)
             ?.commit()
 
@@ -194,5 +205,4 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
     }
-
 }

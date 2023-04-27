@@ -1,17 +1,18 @@
 package com.example.rickyandmorty.presentation.fragments.characters.detail;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +22,10 @@ import com.example.rickyandmorty.databinding.FragmentCharacterDetailBinding;
 import com.example.rickyandmorty.domain.model.characters.Characters;
 import com.example.rickyandmorty.domain.model.episodes.Episodes;
 import com.example.rickyandmorty.presentation.adapters.character.detail.DetailCharacterEpisodesAdapter;
+import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel;
+import com.example.rickyandmorty.presentation.fragments.episodes.detail.DetailEpisodesFragment;
+import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationFragment;
+import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -34,9 +39,11 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class DetailCharacterFragment extends Fragment {
+public class DetailCharacterFragment extends Fragment implements DetailCharacterEpisodesAdapter.EpisodeListener {
     private FragmentCharacterDetailBinding binding;
     private DetailCharacterViewModel detailCharacterViewModel;
+    private EpisodesViewModel episodeViewModel;
+    private DetailLocationViewModel detailLocationViewModel;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView recyclerEpisodesIntoCharacter;
     NetworkApi networkApi;
@@ -50,7 +57,8 @@ public class DetailCharacterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCharacterDetailBinding.inflate(inflater, container, false);
-//                detailCharacterViewModel = new ViewModelProvider(this).get(DetailCharacterViewModel.class);
+        episodeViewModel = new ViewModelProvider(this).get(EpisodesViewModel.class);
+        detailLocationViewModel = new ViewModelProvider(this).get(DetailLocationViewModel.class);
         return binding.getRoot();
     }
 
@@ -62,23 +70,36 @@ public class DetailCharacterFragment extends Fragment {
         recyclerEpisodesIntoCharacter.setHasFixedSize(true);
         hideBotNav();
         ShapeableImageView ivIconCharacter = binding.ivIconDetailCharacter;
-        TextView tvNameCharacter = binding.tvNameDetailCharacter;
-        TextView tvSpeciesCharacter = binding.tvSpeciesDetailCharacter;
-        TextView tvGenderCharacter = binding.tvGenderDetailCharacter;
-        TextView tvOriginCharacter = binding.tvOriginDetailCharacter;
-        TextView tvLocationCharacter = binding.tvLocationDetailCharacter;
         final Observer<Characters> observer = character1 -> {
             assert character1 != null;
             Glide.with(requireContext())
                     .load(character1.getImage())
                     .into(ivIconCharacter);
-            tvNameCharacter.setText(character1.getName());
-            tvSpeciesCharacter.setText(character1.getSpecies());
-            tvGenderCharacter.setText(character1.getGender());
-            tvOriginCharacter.setText(character1.getOrigin().getName());
-            tvLocationCharacter.setText(character1.getLocation().getName());
-
+            binding.tvNameDetailCharacter.setText(character1.getName());
+            binding.tvSpeciesDetailCharacter.setText(character1.getSpecies());
+            binding.tvGenderDetailCharacter.setText(character1.getGender());
+            binding.tvOriginDetailCharacter.setText(character1.getOrigin().getName());
+            binding.tvLocationDetailCharacter.setText(character1.getLocation().getName());
+            binding.tvOriginDetailCharacter.setOnClickListener(v -> {
+                detailLocationViewModel.setLocationName(character1.getOrigin().getName());
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.containerFragment, new DetailLocationFragment(detailLocationViewModel))
+                        .addToBackStack(null)
+                        .commit();
+            });
+            binding.tvLocationDetailCharacter.setOnClickListener(v -> {
+                detailLocationViewModel.setLocationName(character1.getLocation().getName());
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.containerFragment, new DetailLocationFragment(detailLocationViewModel))
+                        .addToBackStack(null)
+                        .commit();
+            });
         };
+
         detailCharacterViewModel.getSelectedItemCharacter().observe(getViewLifecycleOwner(), observer);
         detailCharacterViewModel.getEpisodes();
         detailCharacterViewModel.fetchData();
@@ -95,7 +116,7 @@ public class DetailCharacterFragment extends Fragment {
 
     private void displayData() {
         final Observer<List<Episodes>> observer = listOfEpisodes -> {
-            DetailCharacterEpisodesAdapter adapter = new DetailCharacterEpisodesAdapter(requireContext(), listOfEpisodes);
+            DetailCharacterEpisodesAdapter adapter = new DetailCharacterEpisodesAdapter(requireContext(), listOfEpisodes, this);
             recyclerEpisodesIntoCharacter.setAdapter(adapter);
         };
         detailCharacterViewModel.responseEpisodes.observe(getViewLifecycleOwner(), observer);
@@ -110,5 +131,16 @@ public class DetailCharacterFragment extends Fragment {
     public void hideBotNav() {
         BottomNavigationView botNav = requireActivity().findViewById(R.id.bottomNavigationView);
         botNav.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(Episodes episode) {
+        episodeViewModel.onClickItemEpisodes(episode);
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.containerFragment, new DetailEpisodesFragment(episodeViewModel))
+                .addToBackStack(null)
+                .commit();
     }
 }

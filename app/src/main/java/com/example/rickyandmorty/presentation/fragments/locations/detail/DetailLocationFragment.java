@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.locations.detail;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,28 +63,24 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
             binding.tvNameLocationDetail.setText(location.getName());
             binding.tvDimensionDetail.setText(location.getDimension());
             binding.tvTypeLocationDetail.setText(location.getType());
+            detailLocationViewModel.setListOfCharacters(location);
         };
         detailLocationViewModel.getSelectedItemCharacter().observe(getViewLifecycleOwner(), observer);
         detailLocationViewModel.getCharacters();
         detailLocationViewModel.fetchData();
         displayData();
         detailLocationViewModel.clearListOfCharacters();
-        binding.btnBack.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
-            }
-        });
+        binding.btnBack.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
 
     }
 
 
     private void displayData() {
-        final Observer<List<Characters>> observer = listOfCharacters -> {
+        @SuppressLint("NotifyDataSetChanged") final Observer<List<Characters>> observer = listOfCharacters -> {
             assert listOfCharacters != null;
             DetailLocationCharacterAdapter adapter = new DetailLocationCharacterAdapter(requireContext(), listOfCharacters, this);
             recyclerCharactersIntoLocation.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         };
         detailLocationViewModel.responseCharacters.observe(getViewLifecycleOwner(), observer);
 

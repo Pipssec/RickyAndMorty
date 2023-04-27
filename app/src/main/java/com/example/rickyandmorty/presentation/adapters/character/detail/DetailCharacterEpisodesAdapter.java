@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickyandmorty.R;
+import com.example.rickyandmorty.domain.model.characters.Characters;
 import com.example.rickyandmorty.domain.model.episodes.Episodes;
 
 import java.util.List;
@@ -19,9 +20,12 @@ public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<Episode
     Context context;
     List<Episodes> postsList;
 
-    public DetailCharacterEpisodesAdapter(Context context, List<Episodes> postsList) {
+    EpisodeListener listener;
+
+    public DetailCharacterEpisodesAdapter(Context context, List<Episodes> postsList, EpisodeListener listener) {
         this.context = context;
         this.postsList = postsList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,14 +38,25 @@ public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<Episode
 
     @Override
     public void onBindViewHolder(@NonNull EpisodesViewHolder holder, int position) {
+        Episodes item = postsList.get(position);
         holder.tvNameEpisode.setText((postsList.get(position).getName()));
         holder.tvNumberEpisode.setText((postsList.get(position).getEpisode()));
         holder.tvAirDateEpisode.setText(postsList.get(position).getAir_date());
+        holder.itemView.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(item);
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
         return postsList.size();
+    }
+
+    public interface EpisodeListener{
+        void onItemClick(Episodes episode);
     }
 }

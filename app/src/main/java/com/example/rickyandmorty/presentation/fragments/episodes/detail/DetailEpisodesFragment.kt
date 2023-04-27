@@ -16,9 +16,9 @@ import com.example.rickyandmorty.presentation.fragments.characters.detail.Detail
 import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class DetailEpisodesFragment : Fragment(), DetailLocationCharacterAdapter.SelectListener {
+class DetailEpisodesFragment(private val episodesViewModel: EpisodesViewModel) : Fragment(), DetailLocationCharacterAdapter.SelectListener {
     private lateinit var binding: FragmentEpisodeDetailBinding
-    private val episodesViewModel: EpisodesViewModel by activityViewModels()
+//    private val episodesViewModel: EpisodesViewModel by activityViewModels()
     private val detailCharacterViewModel: DetailCharacterViewModel by activityViewModels()
     lateinit var adapter : DetailLocationCharacterAdapter
 
@@ -49,8 +49,6 @@ class DetailEpisodesFragment : Fragment(), DetailLocationCharacterAdapter.Select
             binding.rvDetailEpisodeCharacters.adapter = adapter
         }
 
-
-
     }
 
     private fun hideBotNav() {
@@ -69,7 +67,7 @@ class DetailEpisodesFragment : Fragment(), DetailLocationCharacterAdapter.Select
                     detailCharacterViewModel
                 )
             )
-            .addToBackStack("characters")
+            .addToBackStack(null)
             .commit()
     }
 }
