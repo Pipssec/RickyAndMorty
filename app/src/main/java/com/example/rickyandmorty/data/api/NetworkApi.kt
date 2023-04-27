@@ -4,6 +4,7 @@ package com.example.rickyandmorty.data.api
 import com.example.rickyandmorty.data.response.characters.CharactersResponse
 import com.example.rickyandmorty.data.response.episodes.EpisodesResponse
 import com.example.rickyandmorty.data.response.location.LocationResponse
+import com.example.rickyandmorty.domain.model.characters.Characters
 import com.example.rickyandmorty.domain.model.episodes.Episodes
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
@@ -42,6 +43,8 @@ interface NetworkApi {
 
     @GET("episode/{id}")
     fun getDetailEpisode(@Path("id") id: String): Observable<List<Episodes>>
+    @GET("character/{id}")
+    fun getDetailCharacter(@Path("id") id: String): Observable<List<Characters>>
 
     companion object {
 

@@ -21,7 +21,7 @@
     <string name="dead_ex">Dead</string>
     <string name="origin">Происхождение</string>
     <string name="tv_ex">TextView</string>
-    <string name="error_parameters">Выберите параметры</string>
+    <string name="error_parameters">Параметры  не были заданы</string>
     <string name="filter">Фильтр</string>
     <string name="apply">Применить</string>
     <string name="status_unknow">Unknown</string>
@@ -42,4 +42,7 @@
     <string name="cronenberg_eng">Cronenberg</string>
     <string name="disease_eng">Disease</string>
     <string name="species">Вид</string>
+    <string name="season">Сезон</string>
+    <string name="Reset">Сброс</string>
+    <string name="ex_location">Название локации</string>
 </resources>

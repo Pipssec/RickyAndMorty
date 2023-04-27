@@ -16,7 +16,7 @@ import androidx.paging.LoadState
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
-import com.example.rickyandmorty.databinding.CharacterFilterFragmentBinding
+import com.example.rickyandmorty.databinding.FragmentCharacterFilterBinding
 import com.example.rickyandmorty.databinding.FragmentCharactersListBinding
 import com.example.rickyandmorty.domain.model.characters.Characters
 import com.example.rickyandmorty.presentation.adapters.character.list.CharactersPagingAdapter
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 class ListCharactersFragment : Fragment(), CharactersPagingAdapter.Listener {
     private lateinit var binding: FragmentCharactersListBinding
-    private lateinit var bindingFilter: CharacterFilterFragmentBinding
+    private lateinit var bindingFilter: FragmentCharacterFilterBinding
     lateinit var viewModelList: ListCharactersViewModel
     private val viewModelDetail: DetailCharacterViewModel by activityViewModels()
     private var adapter = CharactersPagingAdapter(this)
@@ -44,7 +44,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.Listener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        bindingFilter = CharacterFilterFragmentBinding.inflate(inflater)
+        bindingFilter = FragmentCharacterFilterBinding.inflate(inflater)
         binding = FragmentCharactersListBinding.inflate(inflater, container, false)
         viewModelList = ViewModelProvider(this)[ListCharactersViewModel::class.java]
         return binding.root
@@ -144,70 +144,51 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.Listener {
 
     private fun openCharacterFilter() = with(bindingFilter) {
         val dialog = BottomSheetDialog(requireContext())
+        if (bindingFilter.root.parent != null) {
+            (bindingFilter.root.parent as ViewGroup).removeView(bindingFilter.root)
+        }
         dialog.setContentView(bindingFilter.root)
         dialog.show()
-        btnCloseDialog.setOnClickListener { dialog.dismiss() }
-        when (species) {
-            "Human" -> chipHuman.isChecked
-            "Alien" -> chipAlien.isChecked
-            "Humanoid" -> chipHumanoid.isChecked
-            "Robot" -> chipRobot.isChecked
-            "unknown" -> chipUnknownSpecies.isChecked
-            "Poopybutthole" -> chipPoopybutthole.isChecked
-            "Mythological" -> chipMythological.isChecked
-            "Animal" -> chipAnimal.isChecked
-            "Cronenberg" -> chipCronenberg.isChecked
-            "Disease" -> chipDisease.isChecked
-        }
-        when (status) {
-            "Alive" -> chipAlive.isChecked
-            "Dead" -> chipDead.isChecked
-            "unknown" -> chipUnknown.isChecked
-        }
-        when (gender) {
-            "Female" -> chipFemale.isChecked
-            "Male" -> chipMale.isChecked
-            "Genderless" -> chipGenderless.isChecked
-            "unknown" -> chipUnknownGender.isChecked
+        clearVariables()
+        btnCloseDialog.setOnClickListener {
+            dialog.dismiss()
         }
         btnApply.setOnClickListener {
-            if (chipAlive.isChecked) status = "Alive"
-            if (chipDead.isChecked) status = "Dead"
-            if (chipUnknown.isChecked) status = "unknown"
-            if (chipFemale.isChecked) gender = "Female"
-            if (chipMale.isChecked) gender = "Male"
-            if (chipGenderless.isChecked) gender = "Genderless"
-            if (chipUnknownGender.isChecked) gender = "unknown"
-            if (chipHuman.isChecked) species = "Human"
-            if (chipAlien.isChecked) species = "Alien"
-            if (chipHumanoid.isChecked) species = "Humanoid"
-            if (chipRobot.isChecked) species = "Robot"
-            if (chipUnknownSpecies.isChecked) species = "unknown"
-            if (chipPoopybutthole.isChecked) species = "Poopybutthole"
-            if (chipMythological.isChecked) species = "Mythological"
-            if (chipAnimal.isChecked) species = "Animal"
-            if (chipCronenberg.isChecked) species = "Cronenberg"
-            if (chipDisease.isChecked) species = "Disease"
-
-            if (gender.isNotEmpty() || species.isNotEmpty() || gender.isNotEmpty()) {
+            checkFilterParams()
+            if (gender.isNotEmpty() || species.isNotEmpty() || status.isNotEmpty()) {
                 loadAllCharacters(name)
                 dialog.dismiss()
-                binding.btnCharactersFilter.visibility = View.GONE
-                binding.btnResetCharactersFilter.visibility = View.VISIBLE
             } else {
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.error_parameters),
                     Toast.LENGTH_SHORT
                 ).show()
-            }
-            binding.btnResetCharactersFilter.setOnClickListener {
-                binding.btnResetCharactersFilter.visibility = View.GONE
-                binding.btnCharactersFilter.visibility = View.VISIBLE
                 clearVariables()
                 loadAllCharacters(name)
+                dialog.dismiss()
             }
         }
+    }
+
+    private fun checkFilterParams() = with(bindingFilter) {
+        if (chipAlive.isChecked) status = "Alive"
+        if (chipDead.isChecked) status = "Dead"
+        if (chipUnknown.isChecked) status = "unknown"
+        if (chipFemale.isChecked) gender = "Female"
+        if (chipMale.isChecked) gender = "Male"
+        if (chipGenderless.isChecked) gender = "Genderless"
+        if (chipUnknownGender.isChecked) gender = "unknown"
+        if (chipHuman.isChecked) species = "Human"
+        if (chipAlien.isChecked) species = "Alien"
+        if (chipHumanoid.isChecked) species = "Humanoid"
+        if (chipRobot.isChecked) species = "Robot"
+        if (chipUnknownSpecies.isChecked) species = "unknown"
+        if (chipPoopybutthole.isChecked) species = "Poopybutthole"
+        if (chipMythological.isChecked) species = "Mythological"
+        if (chipAnimal.isChecked) species = "Animal"
+        if (chipCronenberg.isChecked) species = "Cronenberg"
+        if (chipDisease.isChecked) species = "Disease"
     }
 
     override fun onClick(character: Characters) {
