@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.rickyandmorty.databinding.AdapterListCharactersBinding
 import com.example.rickyandmorty.domain.model.characters.Characters
 
-class CharactersPagingAdapter(private val listener: Listener) :
+class CharactersPagingAdapter(private val listener: CharacterListener) :
     PagingDataAdapter<Characters, CharactersPagingAdapter.CharactersViewHolder>(CharactersComporator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -46,7 +46,7 @@ class CharactersPagingAdapter(private val listener: Listener) :
             return oldItem == newItem
         }
     }
-    interface Listener{
+    interface CharacterListener{
         fun onClick(character: Characters)
     }
 }

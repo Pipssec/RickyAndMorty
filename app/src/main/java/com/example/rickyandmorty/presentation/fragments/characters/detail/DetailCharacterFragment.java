@@ -84,6 +84,12 @@ public class DetailCharacterFragment extends Fragment {
         detailCharacterViewModel.fetchData();
         displayData();
         detailCharacterViewModel.clearListOfEpisodes();
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
 

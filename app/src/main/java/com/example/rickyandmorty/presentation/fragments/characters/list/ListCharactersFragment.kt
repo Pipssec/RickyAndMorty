@@ -27,7 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ListCharactersFragment : Fragment(), CharactersPagingAdapter.Listener {
+class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterListener {
     private lateinit var binding: FragmentCharactersListBinding
     private lateinit var bindingFilter: FragmentCharacterFilterBinding
     lateinit var viewModelList: ListCharactersViewModel

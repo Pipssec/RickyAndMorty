@@ -7,10 +7,10 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@color/background_item"
-    android:layout_marginStart="16dp"
+    android:layout_marginStart="4dp"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="16dp"
-    android:padding="36dp"
+    android:layout_marginEnd="4dp"
+    android:padding="8dp"
     android:elevation="3dp"
     app:cardCornerRadius="@dimen/card_view_radius">
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,8 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/name_example"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="4dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

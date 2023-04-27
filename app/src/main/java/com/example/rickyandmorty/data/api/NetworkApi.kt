@@ -41,10 +41,13 @@ interface NetworkApi {
         @Query("episode") episode: String
     ): EpisodesResponse
 
+
     @GET("episode/{id}")
     fun getDetailEpisode(@Path("id") id: String): Observable<List<Episodes>>
+
     @GET("character/{id}")
     fun getDetailCharacter(@Path("id") id: String): Observable<List<Characters>>
+
 
     companion object {
 

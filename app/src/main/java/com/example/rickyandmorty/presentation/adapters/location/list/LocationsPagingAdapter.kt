@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickyandmorty.databinding.AdapterListLocationsBinding
 import com.example.rickyandmorty.domain.model.locations.Locations
 
-class LocationsPagingAdapter(private val listener: Listener) :
+class LocationsPagingAdapter(private val listener: LocationListener) :
     PagingDataAdapter<Locations, LocationsPagingAdapter.LocationsViewHolder>(LocationsComporator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,7 +41,7 @@ class LocationsPagingAdapter(private val listener: Listener) :
             return oldItem == newItem
         }
     }
-    interface Listener{
+    interface LocationListener{
         fun onClick(location: Locations)
     }
 }

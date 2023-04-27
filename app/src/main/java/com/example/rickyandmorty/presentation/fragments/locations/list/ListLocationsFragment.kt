@@ -27,7 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ListLocationsFragment : Fragment(), LocationsPagingAdapter.Listener {
+class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListener {
     private lateinit var binding: FragmentLocationsListBinding
     private lateinit var bindingFilter: FragmentLocationFilterBinding
     private var adapter = LocationsPagingAdapter(this)

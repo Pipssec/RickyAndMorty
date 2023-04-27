@@ -68,6 +68,13 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
         detailLocationViewModel.fetchData();
         displayData();
         detailLocationViewModel.clearListOfCharacters();
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
 
     }
 

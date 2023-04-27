@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.databinding.ActivityMainBinding
 import com.example.rickyandmorty.presentation.fragments.characters.list.ListCharactersFragment
-import com.example.rickyandmorty.presentation.fragments.episodes.ListEpisodesFragment
+import com.example.rickyandmorty.presentation.fragments.episodes.list.ListEpisodesFragment
 import com.example.rickyandmorty.presentation.fragments.locations.list.ListLocationsFragment
 
 class MainActivity : AppCompatActivity() {

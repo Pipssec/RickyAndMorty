@@ -31,15 +31,16 @@ public class DetailLocationViewModel extends ViewModel {
                         .getResidents());
 
     }
-     public void setResponse(List<Characters> post){
+
+    public void setResponse(List<Characters> post) {
         responseCharacters.setValue(post);
-     }
+    }
 
     public MutableLiveData<Locations> getSelectedItemCharacter() {
         return selectedItemLocation;
     }
 
-    public void clearListOfCharacters(){
+    public void clearListOfCharacters() {
         listOfCharacters.clear();
     }
 
@@ -47,18 +48,18 @@ public class DetailLocationViewModel extends ViewModel {
         compositeDisposable.add(networkApi.getDetailCharacter(charactersIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setResponse, throwable -> {}));
+                .subscribe(this::setResponse, throwable -> {
+                }));
     }
 
 
-
-    public void getCharacters(){
+    public void getCharacters() {
         String str1;
         String result = "";
-        if(!listOfCharacters.isEmpty()){
-            for(String episode : listOfCharacters){
+        if (!listOfCharacters.isEmpty()) {
+            for (String episode : listOfCharacters) {
                 str1 = episode.substring(42);
-                result = result+str1+",";
+                result = result + str1 + ",";
             }
         }
         charactersIds = result;

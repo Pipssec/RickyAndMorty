@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickyandmorty.databinding.AdapterListEpisodesBinding
 import com.example.rickyandmorty.domain.model.episodes.Episodes
 
-class EpisodesPagingAdapter(private val listener: Listener) :
+class EpisodesPagingAdapter(private val listener: EpisodeListener) :
     PagingDataAdapter<Episodes, EpisodesPagingAdapter.EpisodesViewHolder>(EpisodesComporator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,7 +41,7 @@ class EpisodesPagingAdapter(private val listener: Listener) :
             return oldItem == newItem
         }
     }
-    interface Listener{
+    interface EpisodeListener{
         fun onClick(episode: Episodes)
     }
 }

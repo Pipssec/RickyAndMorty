@@ -1,4 +1,4 @@
-package com.example.rickyandmorty.presentation.fragments.episodes
+package com.example.rickyandmorty.presentation.fragments.episodes.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,23 +10,27 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.example.rickyandmorty.R
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.databinding.FragmentEpisodeFilterBinding
 import com.example.rickyandmorty.databinding.FragmentEpisodesListBinding
 import com.example.rickyandmorty.domain.model.episodes.Episodes
 import com.example.rickyandmorty.presentation.adapters.episodes.EpisodesPagingAdapter
+import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel
+import com.example.rickyandmorty.presentation.fragments.episodes.detail.DetailEpisodesFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.Listener {
+class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
     private lateinit var binding: FragmentEpisodesListBinding
     private lateinit var bindingFilter: FragmentEpisodeFilterBinding
-    private lateinit var episodesViewModel: EpisodesViewModel
+    private val episodesViewModel: EpisodesViewModel by activityViewModels()
     private var adapter = EpisodesPagingAdapter(this)
     private var name = ""
     private var episode = ""
@@ -37,20 +41,17 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.Listener {
         savedInstanceState: Bundle?
     ): View? {
         bindingFilter = FragmentEpisodeFilterBinding.inflate(inflater)
-        binding = FragmentEpisodesListBinding.inflate(inflater, container, false)
-        episodesViewModel = ViewModelProvider(this)[EpisodesViewModel::class.java]
+        binding = FragmentEpisodesListBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initEpisodesFilter()
         loadAllEpisodes(name)
         initProgressBar()
         findByName()
-
-
-
+        initEpisodesFilter()
+        showBotNav()
     }
 
     private fun findByName() {
@@ -180,7 +181,18 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.Listener {
     }
 
     override fun onClick(episode: Episodes) {
-        TODO("Not yet implemented")
+       episodesViewModel.onClickItemEpisodes(episode)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.containerFragment, DetailEpisodesFragment())
+            ?.addToBackStack(null)
+            ?.commit()
+
+    }
+
+    private fun showBotNav() {
+        val bottomNavigationView =
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.visibility = View.VISIBLE
     }
 
 }

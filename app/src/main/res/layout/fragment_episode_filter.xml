@@ -3,9 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/view_detail_character"
-    >
+    android:layout_height="match_parent">
 
     <Button
         android:id="@+id/btnApply"
@@ -27,15 +25,13 @@
         android:id="@+id/btnResetFilter"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/Reset"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btnApply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toEndOf="@id/btnApply"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_season"
+        app:layout_constraintTop_toTopOf="@+id/btnApply"
         app:layout_constraintVertical_bias="0.031"
         app:strokeColor="@color/black" />
 
@@ -67,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/white"
-        android:popupBackground="@drawable/background_custom"
+        android:popupBackground="@color/background_item"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -76,7 +72,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
-        android:popupBackground="@drawable/background_custom"
+        android:popupBackground="@color/background_item"
         app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/spinner_season" />
 

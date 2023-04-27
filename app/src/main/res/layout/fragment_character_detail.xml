@@ -17,6 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toEndOf="@id/ivIconDetailCharacter"
+        app:layout_constraintBottom_toTopOf="@id/tvNameDetailCharacter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/baseline_arrow_back_24" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivIconDetailCharacter"
         android:layout_width="150dp"
@@ -32,14 +41,13 @@
         android:id="@+id/tvNameDetailCharacter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:text="@string/name_example"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toEndOf="@id/ivIconDetailCharacter"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
 
     <TextView
