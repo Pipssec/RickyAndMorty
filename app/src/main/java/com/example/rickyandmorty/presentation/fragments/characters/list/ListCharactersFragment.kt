@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
@@ -57,6 +58,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
         findByName()
         initProgressBar()
         initCharactersFilter()
+        swipeRefresh()
     }
 
     private fun findByName() {
@@ -204,6 +206,16 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
             )
             .addToBackStack("characters")
             .commit()
+    }
+
+    private fun swipeRefresh(){
+        binding.swipeRefreshCharacters.setOnRefreshListener {
+            lifecycleScope.launch{
+                adapter.submitData(PagingData.empty())
+                viewModelList.characterFlow.collectLatest(adapter::submitData)
+            }
+            binding.swipeRefreshCharacters.isRefreshing = false
+        }
     }
 
 }

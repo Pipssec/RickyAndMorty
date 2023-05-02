@@ -2,6 +2,7 @@ package com.example.rickyandmorty.presentation.fragments.locations.detail;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickyandmorty.R;
-import com.example.rickyandmorty.data.api.NetworkApi;
 import com.example.rickyandmorty.databinding.FragmentLocationDetailBinding;
 import com.example.rickyandmorty.domain.model.characters.Characters;
 import com.example.rickyandmorty.domain.model.locations.Locations;
@@ -76,11 +76,13 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
 
 
     private void displayData() {
+        detailLocationViewModel.getCharacters();
+            detailLocationViewModel.fetchData();
         @SuppressLint("NotifyDataSetChanged") final Observer<List<Characters>> observer = listOfCharacters -> {
             assert listOfCharacters != null;
+            Log.d("listOfCharacters", listOfCharacters.toString());
             DetailLocationCharacterAdapter adapter = new DetailLocationCharacterAdapter(requireContext(), listOfCharacters, this);
             recyclerCharactersIntoLocation.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
         };
         detailLocationViewModel.responseCharacters.observe(getViewLifecycleOwner(), observer);
 

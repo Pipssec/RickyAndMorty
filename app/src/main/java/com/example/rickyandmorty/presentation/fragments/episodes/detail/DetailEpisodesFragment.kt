@@ -51,6 +51,11 @@ class DetailEpisodesFragment(private val episodesViewModel: EpisodesViewModel) :
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        episodesViewModel.clearListCharacters()
+    }
+
     private fun hideBotNav() {
         val botNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         botNav.visibility = View.GONE

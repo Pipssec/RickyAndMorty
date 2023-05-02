@@ -38,6 +38,10 @@ class EpisodesViewModel: ViewModel() {
         listOfCharacters.add(episode.characters)
     }
 
+    fun clearListCharacters() {
+        listOfCharacters.clear()
+    }
+
      fun fetchData() {
         compositeDisposable.add(networkApi.getDetailCharacter(charactersIds!!)
             .subscribeOn(Schedulers.io())

@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
@@ -56,7 +57,18 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
         findByName()
         initLocationsFilter()
         showBotNav()
+        swipeRefresh()
 
+    }
+
+    private fun swipeRefresh(){
+        binding.swipeRefreshLocations.setOnRefreshListener {
+            lifecycleScope.launch{
+                adapter.submitData(PagingData.empty())
+                listLocationsViewModel.locationFlow.collectLatest(adapter::submitData)
+            }
+            binding.swipeRefreshLocations.isRefreshing = false
+        }
     }
 
     private fun showBotNav() {

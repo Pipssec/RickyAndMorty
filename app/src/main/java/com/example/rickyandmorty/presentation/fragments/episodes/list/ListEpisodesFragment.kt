@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
@@ -52,19 +53,32 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         findByName()
         initEpisodesFilter()
         showBotNav()
+        swipeRefresh()
+    }
+
+    private fun swipeRefresh(){
+        binding.swipeRefreshEpisodes.setOnRefreshListener {
+            lifecycleScope.launch{
+                adapter.submitData(PagingData.empty())
+                episodesViewModel.episodesFlow.collectLatest(adapter::submitData)
+            }
+            binding.swipeRefreshEpisodes.isRefreshing = false
+        }
     }
 
     private fun findByName() {
         binding.searchInListEpisodes.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val name = query.toString()
+                val nameText = query.toString()
+                name = nameText
                 loadAllEpisodes(name)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val name = newText.toString()
+                val nameText = newText.toString()
+                name = nameText
                 loadAllEpisodes(name)
                 return true
             }

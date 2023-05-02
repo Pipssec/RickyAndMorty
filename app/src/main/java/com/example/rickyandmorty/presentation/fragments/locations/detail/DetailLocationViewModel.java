@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.locations.detail;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -41,6 +42,7 @@ public class DetailLocationViewModel extends ViewModel {
     public void setLocationName(String name){
         locationName.setValue(name);
         fetchDataLocation();
+
     }
 
     public void setResponseCharacter(List<Characters> post) {
