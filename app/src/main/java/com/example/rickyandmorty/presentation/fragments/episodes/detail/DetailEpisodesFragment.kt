@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.episodes.detail
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,20 +8,31 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.rickyandmorty.R
+import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.databinding.FragmentEpisodeDetailBinding
+import com.example.rickyandmorty.di.ViewModelFactory
 import com.example.rickyandmorty.domain.model.characters.Characters
 import com.example.rickyandmorty.presentation.adapters.location.detail.DetailLocationCharacterAdapter
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterFragment
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel
 import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import javax.inject.Inject
 
-class DetailEpisodesFragment(private val episodesViewModel: EpisodesViewModel) : Fragment(), DetailLocationCharacterAdapter.SelectListener {
+class DetailEpisodesFragment() : Fragment(), DetailLocationCharacterAdapter.SelectListener {
     private lateinit var binding: FragmentEpisodeDetailBinding
-//    private val episodesViewModel: EpisodesViewModel by activityViewModels()
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory;
+    private lateinit var episodesViewModel: EpisodesViewModel;
     private val detailCharacterViewModel: DetailCharacterViewModel by activityViewModels()
     lateinit var adapter : DetailLocationCharacterAdapter
+
+    override fun onAttach(context: Context) {
+        (requireActivity().application as App).appComponent.injectDetailEpisodesFragment(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +40,7 @@ class DetailEpisodesFragment(private val episodesViewModel: EpisodesViewModel) :
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEpisodeDetailBinding.inflate(inflater, container, false)
+        episodesViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[EpisodesViewModel::class.java]
         return binding.root
     }
 

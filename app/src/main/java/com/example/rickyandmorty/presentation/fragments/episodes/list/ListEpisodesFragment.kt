@@ -208,7 +208,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
     override fun onClick(episode: Episodes) {
         episodesViewModel.onClickItemEpisodes(episode)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.containerFragment, DetailEpisodesFragment(episodesViewModel))
+            ?.replace(R.id.containerFragment, DetailEpisodesFragment())
             ?.addToBackStack(null)
             ?.commit()
 

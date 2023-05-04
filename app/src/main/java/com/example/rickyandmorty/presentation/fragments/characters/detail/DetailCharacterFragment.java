@@ -159,7 +159,7 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.containerFragment, new DetailEpisodesFragment(episodeViewModel))
+                .replace(R.id.containerFragment, new DetailEpisodesFragment())
                 .addToBackStack(null)
                 .commit();
     }
