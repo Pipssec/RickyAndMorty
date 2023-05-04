@@ -18,8 +18,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class EpisodesViewModel: ViewModel() {
+class EpisodesViewModel@Inject constructor(): ViewModel() {
 
     val selectedItemLocation = MutableLiveData<Episodes>()
     val responseCharacters = MutableLiveData<List<Characters?>?>()

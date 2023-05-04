@@ -25,7 +25,7 @@ class DetailEpisodesFragment() : Fragment(), DetailLocationCharacterAdapter.Sele
     private lateinit var binding: FragmentEpisodeDetailBinding
     @Inject
     lateinit var viewModelFactory: ViewModelFactory;
-    private lateinit var episodesViewModel: EpisodesViewModel;
+    private lateinit var episodesViewModel: EpisodesViewModel
     private val detailCharacterViewModel: DetailCharacterViewModel by activityViewModels()
     lateinit var adapter : DetailLocationCharacterAdapter
 

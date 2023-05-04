@@ -52,7 +52,6 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
     ): View? {
         binding = FragmentLocationsListBinding.inflate(inflater, container, false)
         bindingFilter = FragmentLocationFilterBinding.inflate(inflater, container, false)
-//        listLocationsViewModel = ViewModelProvider(this)[ListLocationsViewModel::class.java]
         return binding.root
     }
 

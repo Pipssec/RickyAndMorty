@@ -30,7 +30,8 @@ public class DetailCharacterViewModel extends ViewModel {
     public String episodesIds;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public NetworkApi networkApi = NetworkApi.Companion.getInstance();
+    @Inject
+    NetworkApi networkApi = NetworkApi.Companion.getInstance();
 
     @Inject
     public DetailCharacterViewModel(){}

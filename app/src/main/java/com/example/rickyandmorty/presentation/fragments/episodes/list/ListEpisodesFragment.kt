@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.episodes.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.example.rickyandmorty.R
+import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.databinding.FragmentEpisodeFilterBinding
@@ -35,6 +37,11 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
     private var adapter = EpisodesPagingAdapter(this)
     private var name = ""
     private var episode = ""
+
+    override fun onAttach(context: Context) {
+        (requireActivity().application as App).appComponent.injectListEpisodesFragment(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

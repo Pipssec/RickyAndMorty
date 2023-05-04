@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.rickyandmorty.data.api.NetworkApi
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel
 import com.example.rickyandmorty.presentation.fragments.characters.list.ListCharactersViewModel
+import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel
 import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationViewModel
 import com.example.rickyandmorty.presentation.fragments.locations.list.ListLocationsViewModel
 import dagger.Binds
@@ -33,6 +34,11 @@ interface AppModule {
     @IntoMap
     @ViewModelKey(DetailLocationViewModel::class)
     fun bindDetailLocationViewModel(viewModel: DetailLocationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EpisodesViewModel::class)
+    fun bindEpisodesViewModel(viewModel: EpisodesViewModel): ViewModel
 
     companion object{
         @Provides

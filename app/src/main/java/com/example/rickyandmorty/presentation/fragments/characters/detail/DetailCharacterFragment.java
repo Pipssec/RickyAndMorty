@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.rickyandmorty.R;
 import com.example.rickyandmorty.app.App;
-import com.example.rickyandmorty.data.api.NetworkApi;
 import com.example.rickyandmorty.databinding.FragmentCharacterDetailBinding;
 import com.example.rickyandmorty.di.AppComponent;
 import com.example.rickyandmorty.di.ViewModelFactory;
@@ -33,18 +32,11 @@ import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailL
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import org.jetbrains.annotations.NotNull;
-
-
 import java.util.List;
-import java.util.Objects;
-
 import javax.inject.Inject;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+
 
 public class DetailCharacterFragment extends Fragment implements DetailCharacterEpisodesAdapter.EpisodeListener {
     private FragmentCharacterDetailBinding binding;
@@ -55,13 +47,8 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
     private DetailLocationViewModel detailLocationViewModel;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView recyclerEpisodesIntoCharacter;
-    NetworkApi networkApi;
     AppComponent component;
 
-
-//    public DetailCharacterFragment(@NotNull DetailCharacterViewModel viewModelDetail) {
-//        this.detailCharacterViewModel = viewModelDetail;
-//    }
 
 
     @Override
@@ -76,8 +63,8 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentCharacterDetailBinding.inflate(inflater, container, false);
-        episodeViewModel = new ViewModelProvider(this).get(EpisodesViewModel.class);
-        detailLocationViewModel = new ViewModelProvider(this).get(DetailLocationViewModel.class);
+        episodeViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(EpisodesViewModel.class);
+        detailLocationViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DetailLocationViewModel.class);
         detailCharacterViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DetailCharacterViewModel.class);
         return binding.getRoot();
     }
@@ -85,7 +72,6 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        networkApi = NetworkApi.Companion.getNetworkApi();
         recyclerEpisodesIntoCharacter = binding.recyclerDetailCharacterEpisodes;
         recyclerEpisodesIntoCharacter.setHasFixedSize(true);
         hideBotNav();
