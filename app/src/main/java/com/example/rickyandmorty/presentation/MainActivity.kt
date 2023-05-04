@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.rickyandmorty.R
+import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.databinding.ActivityMainBinding
 import com.example.rickyandmorty.presentation.fragments.characters.list.ListCharactersFragment
 import com.example.rickyandmorty.presentation.fragments.episodes.list.ListEpisodesFragment
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_RickyAndMorty)
+        (application as App).appComponent.injectMainActivity(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

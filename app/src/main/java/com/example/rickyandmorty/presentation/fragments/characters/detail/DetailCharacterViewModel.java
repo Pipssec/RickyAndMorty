@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -29,6 +31,9 @@ public class DetailCharacterViewModel extends ViewModel {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public NetworkApi networkApi = NetworkApi.Companion.getInstance();
+
+    @Inject
+    public DetailCharacterViewModel(){}
 
 
     public void onClickItemCharacter(Characters character) {

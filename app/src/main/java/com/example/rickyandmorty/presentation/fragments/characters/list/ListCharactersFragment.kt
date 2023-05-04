@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.characters.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.example.rickyandmorty.R
+import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.databinding.FragmentCharacterFilterBinding
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
 class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterListener {
     private lateinit var binding: FragmentCharactersListBinding
     private lateinit var bindingFilter: FragmentCharacterFilterBinding
-    lateinit var viewModelList: ListCharactersViewModel
+    private val viewModelList: ListCharactersViewModel by  activityViewModels()
     private val viewModelDetail: DetailCharacterViewModel by activityViewModels()
     private var adapter = CharactersPagingAdapter(this)
     private var name: String = ""
@@ -39,6 +40,10 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
     private var gender: String = ""
     private var species: String = ""
 
+    override fun onAttach(context: Context) {
+        (requireActivity().application as App).appComponent.injectListCharactersFragment(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +52,6 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
     ): View? {
         bindingFilter = FragmentCharacterFilterBinding.inflate(inflater)
         binding = FragmentCharactersListBinding.inflate(inflater, container, false)
-        viewModelList = ViewModelProvider(this)[ListCharactersViewModel::class.java]
         return binding.root
     }
 
@@ -200,9 +204,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
             .beginTransaction()
             .replace(
                 R.id.containerFragment,
-                DetailCharacterFragment(
-                    viewModelDetail
-                )
+                DetailCharacterFragment()
             )
             .addToBackStack("characters")
             .commit()

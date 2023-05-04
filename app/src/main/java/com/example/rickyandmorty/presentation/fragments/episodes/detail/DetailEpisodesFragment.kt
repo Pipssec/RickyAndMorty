@@ -68,9 +68,7 @@ class DetailEpisodesFragment(private val episodesViewModel: EpisodesViewModel) :
             .beginTransaction()
             .replace(
                 R.id.containerFragment,
-                DetailCharacterFragment(
-                    detailCharacterViewModel
-                )
+                DetailCharacterFragment()
             )
             .addToBackStack(null)
             .commit()

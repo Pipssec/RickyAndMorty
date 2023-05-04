@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.characters.detail;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.rickyandmorty.R;
+import com.example.rickyandmorty.app.App;
 import com.example.rickyandmorty.data.api.NetworkApi;
 import com.example.rickyandmorty.databinding.FragmentCharacterDetailBinding;
+import com.example.rickyandmorty.di.AppComponent;
+import com.example.rickyandmorty.di.ViewModelFactory;
 import com.example.rickyandmorty.domain.model.characters.Characters;
 import com.example.rickyandmorty.domain.model.episodes.Episodes;
 import com.example.rickyandmorty.presentation.adapters.character.detail.DetailCharacterEpisodesAdapter;
@@ -33,6 +37,9 @@ import org.jetbrains.annotations.NotNull;
 
 
 import java.util.List;
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -41,16 +48,28 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailCharacterFragment extends Fragment implements DetailCharacterEpisodesAdapter.EpisodeListener {
     private FragmentCharacterDetailBinding binding;
+    @Inject
+    ViewModelFactory viewModelFactory;
     private DetailCharacterViewModel detailCharacterViewModel;
     private EpisodesViewModel episodeViewModel;
     private DetailLocationViewModel detailLocationViewModel;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView recyclerEpisodesIntoCharacter;
     NetworkApi networkApi;
+    AppComponent component;
 
 
-    public DetailCharacterFragment(@NotNull DetailCharacterViewModel viewModelDetail) {
-        this.detailCharacterViewModel = viewModelDetail;
+//    public DetailCharacterFragment(@NotNull DetailCharacterViewModel viewModelDetail) {
+//        this.detailCharacterViewModel = viewModelDetail;
+//    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        App application = (App) getActivity().getApplication();
+        component = application.getAppComponent();
+        component.injectDetailCharacterFragment(this);
+        super.onAttach(context);
     }
 
     @Nullable
@@ -59,6 +78,7 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
         binding = FragmentCharacterDetailBinding.inflate(inflater, container, false);
         episodeViewModel = new ViewModelProvider(this).get(EpisodesViewModel.class);
         detailLocationViewModel = new ViewModelProvider(this).get(DetailLocationViewModel.class);
+        detailCharacterViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DetailCharacterViewModel.class);
         return binding.getRoot();
     }
 

@@ -105,7 +105,7 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.containerFragment, new DetailCharacterFragment(detailCharacterViewModel))
+                .replace(R.id.containerFragment, new DetailCharacterFragment())
                 .addToBackStack(null)
                 .commit();
     }
