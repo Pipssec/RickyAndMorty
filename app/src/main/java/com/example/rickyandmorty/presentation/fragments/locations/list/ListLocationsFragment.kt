@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.locations.list
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +11,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.example.rickyandmorty.R
+import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.databinding.FragmentLocationFilterBinding
@@ -32,11 +33,16 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
     private lateinit var binding: FragmentLocationsListBinding
     private lateinit var bindingFilter: FragmentLocationFilterBinding
     private var adapter = LocationsPagingAdapter(this)
-    private lateinit var listLocationsViewModel: ListLocationsViewModel
+    private val listLocationsViewModel: ListLocationsViewModel by activityViewModels()
     private val detailLocationViewModel: DetailLocationViewModel by activityViewModels()
     private var name = ""
     private var type = ""
     private var dimension = ""
+
+    override fun onAttach(context: Context) {
+        (requireActivity().application as App).appComponent
+        super.onAttach(context)
+    }
 
 
     override fun onCreateView(
@@ -46,7 +52,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
     ): View? {
         binding = FragmentLocationsListBinding.inflate(inflater, container, false)
         bindingFilter = FragmentLocationFilterBinding.inflate(inflater, container, false)
-        listLocationsViewModel = ViewModelProvider(this)[ListLocationsViewModel::class.java]
+//        listLocationsViewModel = ViewModelProvider(this)[ListLocationsViewModel::class.java]
         return binding.root
     }
 
@@ -210,7 +216,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
             .beginTransaction()
             .replace(
                 R.id.containerFragment,
-                DetailLocationFragment(detailLocationViewModel), "detailLocation"
+                DetailLocationFragment(), "detailLocation"
             )
             .addToBackStack("listLocation")
             .commit()

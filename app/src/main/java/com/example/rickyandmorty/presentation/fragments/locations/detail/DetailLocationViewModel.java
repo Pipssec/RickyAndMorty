@@ -12,6 +12,8 @@ import com.example.rickyandmorty.domain.model.locations.Locations;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -25,6 +27,9 @@ public class DetailLocationViewModel extends ViewModel {
     public String charactersIds;
 
     private final NetworkApi networkApi = NetworkApi.Companion.getInstance();
+
+    @Inject
+    public DetailLocationViewModel(){}
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 

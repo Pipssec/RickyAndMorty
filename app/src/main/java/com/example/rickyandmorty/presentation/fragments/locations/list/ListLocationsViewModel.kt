@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
-class ListLocationsViewModel: ViewModel() {
+class ListLocationsViewModel@Inject constructor(): ViewModel() {
     val errorMessage = MutableLiveData<String>()
 
     var locationFlow: Flow<PagingData<Locations>> = emptyFlow()

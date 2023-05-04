@@ -15,8 +15,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_RickyAndMorty)
-        (application as App).appComponent.injectMainActivity(this)
         super.onCreate(savedInstanceState)
+        (application as App).appComponent.injectMainActivity(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initialBotNav()

@@ -1,6 +1,7 @@
 package com.example.rickyandmorty.presentation.fragments.locations.detail;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +17,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickyandmorty.R;
+import com.example.rickyandmorty.app.App;
 import com.example.rickyandmorty.databinding.FragmentLocationDetailBinding;
+import com.example.rickyandmorty.di.AppComponent;
+import com.example.rickyandmorty.di.ViewModelFactory;
 import com.example.rickyandmorty.domain.model.characters.Characters;
 import com.example.rickyandmorty.domain.model.locations.Locations;
 import com.example.rickyandmorty.presentation.adapters.location.detail.DetailLocationCharacterAdapter;
@@ -27,6 +31,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -39,16 +45,31 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView recyclerCharactersIntoLocation;
 
+    @Inject
+    ViewModelFactory viewModelFactory;
 
-    public DetailLocationFragment(@NotNull DetailLocationViewModel detailLocationViewModel) {
-        this.detailLocationViewModel = detailLocationViewModel;
+    AppComponent component;
+
+
+//    public DetailLocationFragment(@NotNull DetailLocationViewModel detailLocationViewModel) {
+//        this.detailLocationViewModel = detailLocationViewModel;
+//    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        App application = (App) requireActivity().getApplication();
+        component = application.getAppComponent();
+        component.injectDetailLocationFragment(this);
+        super.onAttach(context);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentLocationDetailBinding.inflate(inflater, container, false);
-        detailCharacterViewModel = new ViewModelProvider(this).get(DetailCharacterViewModel.class);
+        detailCharacterViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DetailCharacterViewModel.class);
+        detailLocationViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DetailLocationViewModel.class);
         return binding.getRoot();
     }
 

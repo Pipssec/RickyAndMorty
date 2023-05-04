@@ -66,7 +66,7 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
 
     @Override
     public void onAttach(@NonNull Context context) {
-        App application = (App) getActivity().getApplication();
+        App application = (App) requireActivity().getApplication();
         component = application.getAppComponent();
         component.injectDetailCharacterFragment(this);
         super.onAttach(context);
@@ -105,7 +105,7 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.containerFragment, new DetailLocationFragment(detailLocationViewModel))
+                        .replace(R.id.containerFragment, new DetailLocationFragment())
                         .addToBackStack(null)
                         .commit();
             });
@@ -114,7 +114,7 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.containerFragment, new DetailLocationFragment(detailLocationViewModel))
+                        .replace(R.id.containerFragment, new DetailLocationFragment())
                         .addToBackStack(null)
                         .commit();
             });
