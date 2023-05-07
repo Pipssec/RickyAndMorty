@@ -1,16 +1,14 @@
-package com.example.rickyandmorty.domain.model.characters
+package com.example.rickyandmorty.domain.models.character
 
-import com.example.rickyandmorty.domain.model.locations.Locations
-
-data class  Characters(
+data class  CharacterResult(
     val created: String,
     val episode: List<String>,
     val gender: String,
     val id: Int,
     val image: String,
-    val location: Locations,
+    val location: CharacterLocation,
     val name: String,
-    val origin: Origin,
+    val origin: CharacterOrigin,
     val species: String,
     val status: String,
     val type: String,

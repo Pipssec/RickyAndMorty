@@ -9,8 +9,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.rickyandmorty.data.api.NetworkApi
 import com.example.rickyandmorty.data.datasource.EpisodesDataSource
-import com.example.rickyandmorty.domain.model.characters.Characters
-import com.example.rickyandmorty.domain.model.episodes.Episodes
+import com.example.rickyandmorty.domain.models.character.CharacterResult
+import com.example.rickyandmorty.domain.models.episodes.Episode
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -22,8 +22,8 @@ import javax.inject.Inject
 
 class EpisodesViewModel@Inject constructor(): ViewModel() {
 
-    val selectedItemLocation = MutableLiveData<Episodes>()
-    val responseCharacters = MutableLiveData<List<Characters?>?>()
+    val selectedItemLocation = MutableLiveData<Episode>()
+    val responseCharacterResult = MutableLiveData<List<CharacterResult?>?>()
     private val listOfCharacters = mutableListOf<List<String>>()
     private var charactersIds: String? = null
     private val networkApi = NetworkApi.getInstance()
@@ -32,9 +32,9 @@ class EpisodesViewModel@Inject constructor(): ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
 
-    var episodesFlow: Flow<PagingData<Episodes>> = emptyFlow()
+    var episodeFlow: Flow<PagingData<Episode>> = emptyFlow()
 
-    fun onClickItemEpisodes(episode: Episodes) {
+    fun onClickItemEpisodes(episode: Episode) {
         selectedItemLocation.value = episode
         listOfCharacters.add(episode.characters)
     }
@@ -48,14 +48,14 @@ class EpisodesViewModel@Inject constructor(): ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { post: List<Characters?>? ->
-                    this.responseCharacters.value = post
+                { post: List<CharacterResult?>? ->
+                    this.responseCharacterResult.value = post
                 }
             ) { throwable: Throwable? -> })
     }
 
     fun loadAllEpisodes(name: String, episode: String) {
-        episodesFlow = Pager(PagingConfig(pageSize = 1)) {
+        episodeFlow = Pager(PagingConfig(pageSize = 1)) {
             EpisodesDataSource(name = name,episode = episode)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

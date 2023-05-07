@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.rickyandmorty.databinding.AdapterListCharactersBinding
-import com.example.rickyandmorty.domain.model.characters.Characters
+import com.example.rickyandmorty.domain.models.character.CharacterResult
 
 class CharactersPagingAdapter(private val listener: CharacterListener) :
-    PagingDataAdapter<Characters, CharactersPagingAdapter.CharactersViewHolder>(CharactersComporator) {
+    PagingDataAdapter<CharacterResult, CharactersPagingAdapter.CharactersViewHolder>(CharactersComporator) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = AdapterListCharactersBinding.inflate(inflater, parent, false)
@@ -37,16 +37,16 @@ class CharactersPagingAdapter(private val listener: CharacterListener) :
 
     }
 
-    object CharactersComporator : DiffUtil.ItemCallback<Characters>() {
-        override fun areItemsTheSame(oldItem: Characters, newItem: Characters): Boolean {
+    object CharactersComporator : DiffUtil.ItemCallback<CharacterResult>() {
+        override fun areItemsTheSame(oldItem: CharacterResult, newItem: CharacterResult): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Characters, newItem: Characters): Boolean {
+        override fun areContentsTheSame(oldItem: CharacterResult, newItem: CharacterResult): Boolean {
             return oldItem == newItem
         }
     }
     interface CharacterListener{
-        fun onClick(character: Characters)
+        fun onClick(character: CharacterResult)
     }
 }

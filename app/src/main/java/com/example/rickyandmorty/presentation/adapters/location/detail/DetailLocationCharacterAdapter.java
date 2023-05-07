@@ -11,17 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.rickyandmorty.R;
-import com.example.rickyandmorty.domain.model.characters.Characters;
+import com.example.rickyandmorty.domain.models.character.CharacterResult;
 
 
 import java.util.List;
 
 public class DetailLocationCharacterAdapter extends RecyclerView.Adapter<CharactersViewHolder> {
     private Context context;
-    private List<Characters> listCharacters;
+    private List<CharacterResult> listCharacters;
     private SelectListener listener;
 
-    public DetailLocationCharacterAdapter(Context context, List<Characters> listCharacters, SelectListener listener){
+    public DetailLocationCharacterAdapter(Context context, List<CharacterResult> listCharacters, SelectListener listener){
         this.context = context;
         this.listCharacters = listCharacters;
         this.listener = listener;
@@ -38,7 +38,7 @@ public class DetailLocationCharacterAdapter extends RecyclerView.Adapter<Charact
 
     @Override
     public void onBindViewHolder(@NonNull CharactersViewHolder holder, int position) {
-        Characters item = listCharacters.get(position);
+        CharacterResult item = listCharacters.get(position);
         Glide.with(holder.tvImage)
                 .load(listCharacters.get(position).getImage())
                 .into(holder.tvImage);
@@ -60,6 +60,6 @@ public class DetailLocationCharacterAdapter extends RecyclerView.Adapter<Charact
     }
 
     public interface SelectListener{
-        void onItemClicked(Characters character);
+        void onItemClicked(CharacterResult character);
     }
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
-import com.example.rickyandmorty.data.datasource.CharacterDataSource
-import com.example.rickyandmorty.domain.model.characters.Characters
+import com.example.rickyandmorty.domain.models.character.CharacterResult
+import com.example.rickyandmorty.domain.usecases.GetCharacterUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
@@ -14,14 +14,16 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 
-class ListCharactersViewModel@Inject constructor() : ViewModel() {
+class ListCharactersViewModel@Inject constructor(
+    private val getCharacterUseCase: GetCharacterUseCase
+) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
 
-    var characterFlow: Flow<PagingData<Characters>> = emptyFlow()
+    var characterFlow: Flow<PagingData<CharacterResult>> = emptyFlow()
 
     fun loadCharacters(name: String, status: String, gender: String, species: String) {
-        characterFlow = Pager(PagingConfig(pageSize = 1)) {
-            CharacterDataSource(name, status, gender, species)
+        characterFlow = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false, initialLoadSize = 20)) {
+            getCharacterUseCase.getCharacter(name, status, gender, species)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }

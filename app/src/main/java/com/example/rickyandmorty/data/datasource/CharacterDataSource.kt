@@ -1,37 +1,49 @@
 package com.example.rickyandmorty.data.datasource
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.rickyandmorty.data.api.NetworkApi
-import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.data.api.ext.backendException
-import com.example.rickyandmorty.domain.model.characters.Characters
+import com.example.rickyandmorty.domain.models.character.CharacterInfo
+import com.example.rickyandmorty.domain.models.character.CharacterResult
+import com.example.rickyandmorty.domain.repository.CharacterRepository
+import javax.inject.Inject
 
-class CharacterDataSource(
-                          private val name: String,
-                          private val status: String,
-                          private val gender: String,
-                          private val species: String
-) : PagingSource<Int, Characters>() {
-
+class CharacterDataSource@Inject constructor(
+    private val repository: CharacterRepository,
+    private val application: Application,
+    private val name: String,
+    private val status: String,
+    private val gender: String,
+    private val species: String,
+) : PagingSource<Int, CharacterResult>() {
     companion object {
         private const val START_PAGE = 1
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Characters> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterResult> {
         try {
+            var nextKey: Int? = 1
             val page = params.key ?: START_PAGE
-            val networkApi = NetworkApi.getInstance()
-            val response = networkApi.getAllCharacters(page,name, status, gender, species)
-            val characters = response.results
-            if(characters.isEmpty()){
-                return LoadResult.Error(NoDataException())
+            val responseData = arrayListOf<CharacterResult>()
+            if(hasConnected(application.applicationContext)) {
+                val response = repository.getCharacter(page,name,gender,status,species)
+                responseData.addAll(response.result)
+                nextKey = if(response.info.next == null && response.result.isEmpty()) null else page+1
+            } else {
+                val listCharacters = repository.getListCharacters()
+                responseData.addAll(listCharacters)
+                Log.d("Character", responseData.size.toString())
+                nextKey = if(responseData.isNotEmpty()) null else page+1
+                Log.d("Character", nextKey.toString())
             }
 
             val prevKey = if (page == START_PAGE) null else page - 1
-            val nextKey = if (response.info.next == null) null else page+1
             return LoadResult.Page(
-                data = characters,
+                data = responseData,
                 prevKey = prevKey,
                 nextKey = nextKey
             )
@@ -40,5 +52,11 @@ class CharacterDataSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Characters>): Int? = null
+    override fun getRefreshKey(state: PagingState<Int, CharacterResult>): Int? = null
+
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
+    }
 }

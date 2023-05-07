@@ -18,10 +18,9 @@ import androidx.paging.PagingData
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
-import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.databinding.FragmentEpisodeFilterBinding
 import com.example.rickyandmorty.databinding.FragmentEpisodesListBinding
-import com.example.rickyandmorty.domain.model.episodes.Episodes
+import com.example.rickyandmorty.domain.models.episodes.Episode
 import com.example.rickyandmorty.presentation.adapters.episodes.EpisodesPagingAdapter
 import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel
 import com.example.rickyandmorty.presentation.fragments.episodes.detail.DetailEpisodesFragment
@@ -67,7 +66,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         binding.swipeRefreshEpisodes.setOnRefreshListener {
             lifecycleScope.launch{
                 adapter.submitData(PagingData.empty())
-                episodesViewModel.episodesFlow.collectLatest(adapter::submitData)
+                episodesViewModel.episodeFlow.collectLatest(adapter::submitData)
             }
             binding.swipeRefreshEpisodes.isRefreshing = false
         }
@@ -172,7 +171,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         }
         lifecycleScope.launch {
             episodesViewModel.loadAllEpisodes(name, episode)
-            episodesViewModel.episodesFlow.collectLatest(adapter::submitData)
+            episodesViewModel.episodeFlow.collectLatest(adapter::submitData)
         }
     }
 
@@ -192,11 +191,6 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
                 }
                 when (error) {
                     null -> {}
-                    is NoDataException -> Toast.makeText(
-                        requireContext(),
-                        "Данные не найдены",
-                        Toast.LENGTH_LONG
-                    ).show()
                     is BackendException -> Toast.makeText(
                         requireContext(),
                         "Данные не найдены",
@@ -212,7 +206,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         }
     }
 
-    override fun onClick(episode: Episodes) {
+    override fun onClick(episode: Episode) {
         episodesViewModel.onClickItemEpisodes(episode)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.containerFragment, DetailEpisodesFragment())

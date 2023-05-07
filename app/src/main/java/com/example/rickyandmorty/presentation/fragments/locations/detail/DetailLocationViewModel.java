@@ -1,13 +1,12 @@
 package com.example.rickyandmorty.presentation.fragments.locations.detail;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.rickyandmorty.data.api.NetworkApi;
-import com.example.rickyandmorty.data.response.location.LocationResponse;
-import com.example.rickyandmorty.domain.model.characters.Characters;
-import com.example.rickyandmorty.domain.model.locations.Locations;
+import com.example.rickyandmorty.data.api.response.location.LocationResponse;
+import com.example.rickyandmorty.domain.models.character.CharacterResult;
+import com.example.rickyandmorty.domain.models.locations.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class DetailLocationViewModel extends ViewModel {
-    public MutableLiveData<Locations> selectedItemLocation = new MutableLiveData<>();
-    public MutableLiveData<List<Characters>> responseCharacters = new MutableLiveData<>();
+    public MutableLiveData<Location> selectedItemLocation = new MutableLiveData<>();
+    public MutableLiveData<List<CharacterResult>> responseCharacters = new MutableLiveData<>();
 
     public MutableLiveData<String> locationName = new MutableLiveData<>();
     public List<String> listOfCharacters = new ArrayList<>();
@@ -33,12 +32,12 @@ public class DetailLocationViewModel extends ViewModel {
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public void onClickItemCharacter(Locations location) {
+    public void onClickItemCharacter(Location location) {
         selectedItemLocation.setValue(location);
         setListOfCharacters(location);
     }
 
-    public void setListOfCharacters(Locations location) {
+    public void setListOfCharacters(Location location) {
         listOfCharacters
                 .addAll(location
                         .getResidents());
@@ -50,7 +49,7 @@ public class DetailLocationViewModel extends ViewModel {
 
     }
 
-    public void setResponseCharacter(List<Characters> post) {
+    public void setResponseCharacter(List<CharacterResult> post) {
         responseCharacters.setValue(post);
 
     }
@@ -60,7 +59,7 @@ public class DetailLocationViewModel extends ViewModel {
         setListOfCharacters(post.getResults().get(0));
     }
 
-    public MutableLiveData<Locations> getSelectedItemCharacter() {
+    public MutableLiveData<Location> getSelectedItemCharacter() {
         return selectedItemLocation;
     }
 

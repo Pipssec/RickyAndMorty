@@ -1,4 +1,4 @@
-package com.example.rickyandmorty.data.response.episodes
+package com.example.rickyandmorty.data.api.response.episode
 
 data class Info(
     val count: Int,

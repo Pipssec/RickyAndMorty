@@ -11,30 +11,35 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
-import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.databinding.FragmentCharacterFilterBinding
 import com.example.rickyandmorty.databinding.FragmentCharactersListBinding
-import com.example.rickyandmorty.domain.model.characters.Characters
+import com.example.rickyandmorty.di.ViewModelFactory
+import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.presentation.adapters.character.list.CharactersPagingAdapter
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterFragment
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterListener {
     private lateinit var binding: FragmentCharactersListBinding
     private lateinit var bindingFilter: FragmentCharacterFilterBinding
-    private val viewModelList: ListCharactersViewModel by  activityViewModels()
+    private lateinit var viewModelList: ListCharactersViewModel
     private val viewModelDetail: DetailCharacterViewModel by activityViewModels()
     private var adapter = CharactersPagingAdapter(this)
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private var name: String = ""
     private var status: String = ""
     private var gender: String = ""
@@ -51,6 +56,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
         savedInstanceState: Bundle?
     ): View? {
         bindingFilter = FragmentCharacterFilterBinding.inflate(inflater)
+        viewModelList = ViewModelProvider(requireActivity(), viewModelFactory)[ListCharactersViewModel::class.java]
         binding = FragmentCharactersListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -98,11 +104,6 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
                 }
                 when (error) {
                     null -> {}
-                    is NoDataException -> Toast.makeText(
-                        requireContext(),
-                        "Данные не найдены",
-                        Toast.LENGTH_LONG
-                    ).show()
                     is BackendException -> Toast.makeText(
                         requireContext(),
                         "Данные не найдены",
@@ -110,7 +111,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
                     ).show()
                     else -> Toast.makeText(
                         requireContext(),
-                        "Неизвестная ошибка",
+                        error.message,
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -197,7 +198,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
         if (chipDisease.isChecked) species = "Disease"
     }
 
-    override fun onClick(character: Characters) {
+    override fun onClick(character: CharacterResult) {
         viewModelDetail.onClickItemCharacter(character)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager

@@ -1,7 +1,7 @@
 package com.example.rickyandmorty.data.api.ext
 
 import com.example.rickyandmorty.data.api.exception.BackendException
-import com.example.rickyandmorty.data.response.ErrorResponse
+import com.example.rickyandmorty.data.api.response.ErrorResponse
 import com.squareup.moshi.Moshi
 import retrofit2.HttpException
 

@@ -1,6 +1,6 @@
-package com.example.rickyandmorty.domain.model.episodes
+package com.example.rickyandmorty.domain.models.episodes
 
-data class Episodes(
+data class Episode(
     val air_date: String,
     val characters: List<String>,
     val created: String,

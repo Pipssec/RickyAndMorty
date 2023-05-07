@@ -13,7 +13,7 @@ import com.example.rickyandmorty.R
 import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.databinding.FragmentEpisodeDetailBinding
 import com.example.rickyandmorty.di.ViewModelFactory
-import com.example.rickyandmorty.domain.model.characters.Characters
+import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.presentation.adapters.location.detail.DetailLocationCharacterAdapter
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterFragment
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel
@@ -57,7 +57,7 @@ class DetailEpisodesFragment() : Fragment(), DetailLocationCharacterAdapter.Sele
         }
         episodesViewModel.getCharacters()
         episodesViewModel.fetchData()
-        episodesViewModel.responseCharacters.observe(viewLifecycleOwner){
+        episodesViewModel.responseCharacterResult.observe(viewLifecycleOwner){
             adapter = DetailLocationCharacterAdapter(requireContext(), it, this)
             binding.rvDetailEpisodeCharacters.adapter = adapter
         }
@@ -74,7 +74,7 @@ class DetailEpisodesFragment() : Fragment(), DetailLocationCharacterAdapter.Sele
         botNav.visibility = View.GONE
     }
 
-    override fun onItemClicked(character: Characters?) {
+    override fun onItemClicked(character: CharacterResult?) {
         detailCharacterViewModel.onClickItemCharacter(character)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager

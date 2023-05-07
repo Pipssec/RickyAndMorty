@@ -17,10 +17,9 @@ import androidx.paging.PagingData
 import com.example.rickyandmorty.R
 import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
-import com.example.rickyandmorty.data.api.exception.NoDataException
 import com.example.rickyandmorty.databinding.FragmentLocationFilterBinding
 import com.example.rickyandmorty.databinding.FragmentLocationsListBinding
-import com.example.rickyandmorty.domain.model.locations.Locations
+import com.example.rickyandmorty.domain.models.locations.Location
 import com.example.rickyandmorty.presentation.adapters.location.list.LocationsPagingAdapter
 import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationFragment
 import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationViewModel
@@ -109,11 +108,6 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
                 }
                 when (error) {
                     null -> {}
-                    is NoDataException -> Toast.makeText(
-                        requireContext(),
-                        "Данные не найдены",
-                        Toast.LENGTH_LONG
-                    ).show()
                     is BackendException -> Toast.makeText(
                         requireContext(),
                         "Данные не найдены",
@@ -121,7 +115,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
                     ).show()
                     else -> Toast.makeText(
                         requireContext(),
-                        "Неизвестная ошибка",
+                        error.message,
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -208,7 +202,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
         if (chipUnknownDimension.isChecked) dimension = "unknown"
     }
 
-    override fun onClick(location: Locations) {
+    override fun onClick(location: Location) {
         detailLocationViewModel.onClickItemCharacter(location)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager

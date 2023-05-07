@@ -21,14 +21,12 @@ import com.example.rickyandmorty.app.App;
 import com.example.rickyandmorty.databinding.FragmentLocationDetailBinding;
 import com.example.rickyandmorty.di.AppComponent;
 import com.example.rickyandmorty.di.ViewModelFactory;
-import com.example.rickyandmorty.domain.model.characters.Characters;
-import com.example.rickyandmorty.domain.model.locations.Locations;
+import com.example.rickyandmorty.domain.models.character.CharacterResult;
+import com.example.rickyandmorty.domain.models.locations.Location;
 import com.example.rickyandmorty.presentation.adapters.location.detail.DetailLocationCharacterAdapter;
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterFragment;
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -49,11 +47,6 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
     ViewModelFactory viewModelFactory;
 
     AppComponent component;
-
-
-//    public DetailLocationFragment(@NotNull DetailLocationViewModel detailLocationViewModel) {
-//        this.detailLocationViewModel = detailLocationViewModel;
-//    }
 
 
     @Override
@@ -79,7 +72,7 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
         recyclerCharactersIntoLocation = binding.rvDetailLocationCharacters;
         recyclerCharactersIntoLocation.setHasFixedSize(true);
         hideBotNav();
-        final Observer<Locations> observer = location -> {
+        final Observer<Location> observer = location -> {
             assert location != null;
             binding.tvNameLocationDetail.setText(location.getName());
             binding.tvDimensionDetail.setText(location.getDimension());
@@ -91,7 +84,7 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
         detailLocationViewModel.fetchData();
         displayData();
         detailLocationViewModel.clearListOfCharacters();
-        binding.btnBack.setOnClickListener(v -> getActivity().getSupportFragmentManager().popBackStack());
+        binding.btnBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
     }
 
@@ -99,7 +92,8 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
     private void displayData() {
         detailLocationViewModel.getCharacters();
             detailLocationViewModel.fetchData();
-        @SuppressLint("NotifyDataSetChanged") final Observer<List<Characters>> observer = listOfCharacters -> {
+        @SuppressLint("NotifyDataSetChanged")
+        final Observer<List<CharacterResult>> observer = listOfCharacters -> {
             assert listOfCharacters != null;
             Log.d("listOfCharacters", listOfCharacters.toString());
             DetailLocationCharacterAdapter adapter = new DetailLocationCharacterAdapter(requireContext(), listOfCharacters, this);
@@ -121,7 +115,7 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
     }
 
     @Override
-    public void onItemClicked(Characters character) {
+    public void onItemClicked(CharacterResult character) {
         detailCharacterViewModel.onClickItemCharacter(character);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager
