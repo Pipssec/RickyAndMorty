@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.rickyandmorty.data.api.NetworkApi;
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
 import com.example.rickyandmorty.domain.models.episodes.EpisodeResult;
+import com.example.rickyandmorty.domain.repository.CharacterRepository;
+import com.example.rickyandmorty.domain.usecases.character.CharacterUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +24,14 @@ public class DetailCharacterViewModel extends ViewModel {
     public List<String> listOfEpisodes = new ArrayList<>();
     public String episodesIds;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-    NetworkApi networkApi = NetworkApi.Companion.getInstance();
+    CharacterUseCase characterUseCase;
 
     @Inject
-    public DetailCharacterViewModel(){}
+    public DetailCharacterViewModel(
+            CharacterUseCase characterUseCase
+    ){
+        this.characterUseCase = characterUseCase;
+    }
 
 
     public void onClickItemCharacter(CharacterResult character) {
@@ -50,7 +55,7 @@ public class DetailCharacterViewModel extends ViewModel {
     }
 
     void fetchData() {
-        compositeDisposable.add(networkApi.getDetailEpisode(episodesIds)
+        compositeDisposable.add(characterUseCase.getDetailEpisode(episodesIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setListOfEpisodes, throwable -> {

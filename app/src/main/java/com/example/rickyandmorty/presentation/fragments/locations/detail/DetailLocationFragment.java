@@ -78,11 +78,8 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
             binding.tvNameLocationDetail.setText(location.getName());
             binding.tvDimensionDetail.setText(location.getDimension());
             binding.tvTypeLocationDetail.setText(location.getType());
-            detailLocationViewModel.setListOfCharacters(location);
         };
         detailLocationViewModel.getSelectedItemCharacter().observe(getViewLifecycleOwner(), observer);
-        detailLocationViewModel.getCharacters();
-        detailLocationViewModel.fetchData();
         displayData();
         detailLocationViewModel.clearListOfCharacters();
         binding.btnBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());

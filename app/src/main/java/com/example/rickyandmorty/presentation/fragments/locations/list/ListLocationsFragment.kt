@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -36,7 +35,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
     private lateinit var bindingFilter: FragmentLocationFilterBinding
     private var adapter = LocationsPagingAdapter(this)
     private lateinit var listLocationsViewModel: ListLocationsViewModel
-    private val detailLocationViewModel: DetailLocationViewModel by activityViewModels()
+    private lateinit var detailLocationViewModel: DetailLocationViewModel
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private var name = ""
@@ -57,6 +56,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
     ): View? {
         binding = FragmentLocationsListBinding.inflate(inflater, container, false)
         listLocationsViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ListLocationsViewModel::class.java]
+        detailLocationViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[DetailLocationViewModel::class.java]
         bindingFilter = FragmentLocationFilterBinding.inflate(inflater, container, false)
         return binding.root
     }

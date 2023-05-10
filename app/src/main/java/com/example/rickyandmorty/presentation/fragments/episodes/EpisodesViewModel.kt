@@ -7,7 +7,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.rickyandmorty.data.api.NetworkApi
 import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
 import com.example.rickyandmorty.domain.usecases.episode.EpisodeUseCase
@@ -28,7 +27,6 @@ class EpisodesViewModel@Inject constructor(
     val responseCharacterResult = MutableLiveData<List<CharacterResult?>?>()
     private val listOfCharacters = mutableListOf<List<String>>()
     private var charactersIds: String? = null
-    private val networkApi = NetworkApi.getInstance()
     private val compositeDisposable = CompositeDisposable()
 
 
@@ -46,14 +44,14 @@ class EpisodesViewModel@Inject constructor(
     }
 
      fun fetchData() {
-        compositeDisposable.add(networkApi.getDetailCharacter(charactersIds!!)
+        compositeDisposable.add(episodeUseCase.getDetailCharacter(charactersIds!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { post: List<CharacterResult?>? ->
                     this.responseCharacterResult.value = post
                 }
-            ) { throwable: Throwable? -> })
+            ) { _: Throwable? -> })
     }
 
     fun loadAllEpisodes(name: String, episode: String) {

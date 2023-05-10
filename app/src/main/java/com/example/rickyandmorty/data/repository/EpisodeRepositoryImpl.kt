@@ -4,9 +4,11 @@ package com.example.rickyandmorty.data.repository
 import com.example.rickyandmorty.data.api.NetworkApi
 import com.example.rickyandmorty.data.db.dao.EpisodeDao
 import com.example.rickyandmorty.data.mappers.EpisodeMapper
+import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.models.episodes.Episode
 import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
 import com.example.rickyandmorty.domain.repository.EpisodeRepository
+import io.reactivex.Observable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,5 +39,9 @@ class EpisodeRepositoryImpl @Inject constructor(
             }
         }
         return listEpisodes
+    }
+
+    override fun getDetailCharacter(id: String): Observable<List<CharacterResult>> {
+        return apiService.getDetailCharacter(id)
     }
 }

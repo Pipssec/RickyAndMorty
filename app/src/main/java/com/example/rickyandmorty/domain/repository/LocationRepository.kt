@@ -1,7 +1,9 @@
 package com.example.rickyandmorty.domain.repository
 
+import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.models.locations.Location
 import com.example.rickyandmorty.domain.models.locations.LocationResult
+import io.reactivex.Observable
 
 
 interface LocationRepository {
@@ -11,5 +13,9 @@ interface LocationRepository {
     suspend fun insertLocation(list: List<LocationResult>)
 
     fun getListLocationsDb(): List<LocationResult>
+
+    fun getDetailCharacter(id: String): Observable<List<CharacterResult>>
+
+    fun getDetailLocation(name: String): Observable<Location>
 
 }

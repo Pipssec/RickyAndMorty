@@ -2,6 +2,8 @@ package com.example.rickyandmorty.domain.repository
 
 import com.example.rickyandmorty.domain.models.character.CharacterModel
 import com.example.rickyandmorty.domain.models.character.CharacterResult
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
+import io.reactivex.Observable
 
 interface CharacterRepository {
 
@@ -9,6 +11,8 @@ interface CharacterRepository {
 
     suspend fun insertCharacter(list: List<CharacterResult>)
 
-    suspend fun getListCharacters(): List<CharacterResult>
+    fun getListCharacters(): List<CharacterResult>
+
+    fun getDetailEpisode(id: String): Observable<List<EpisodeResult>>
 
 }

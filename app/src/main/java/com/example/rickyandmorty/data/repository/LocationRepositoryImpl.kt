@@ -3,9 +3,11 @@ package com.example.rickyandmorty.data.repository
 import com.example.rickyandmorty.data.api.NetworkApi
 import com.example.rickyandmorty.data.db.dao.LocationDao
 import com.example.rickyandmorty.data.mappers.LocationMapper
+import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.models.locations.Location
 import com.example.rickyandmorty.domain.models.locations.LocationResult
 import com.example.rickyandmorty.domain.repository.LocationRepository
+import io.reactivex.Observable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,7 +16,7 @@ import javax.inject.Inject
 class LocationRepositoryImpl @Inject constructor(
     private val apiService: NetworkApi,
     private val locationDao: LocationDao,
-    val mapper: LocationMapper
+    private val mapper: LocationMapper
 ): LocationRepository {
 
     override suspend fun getLocation(
@@ -41,5 +43,13 @@ class LocationRepositoryImpl @Inject constructor(
             }
         }
         return listLocations
+    }
+
+    override fun getDetailCharacter(id: String): Observable<List<CharacterResult>> {
+        return apiService.getDetailCharacter(id)
+    }
+
+    override fun getDetailLocation(name: String): Observable<Location> {
+        return apiService.getDetailLocation(name)
     }
 }

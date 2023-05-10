@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -27,7 +26,6 @@ import com.example.rickyandmorty.presentation.fragments.characters.detail.Detail
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,7 +34,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
     private lateinit var binding: FragmentCharactersListBinding
     private lateinit var bindingFilter: FragmentCharacterFilterBinding
     private lateinit var viewModelList: ListCharactersViewModel
-    private val viewModelDetail: DetailCharacterViewModel by activityViewModels()
+    private lateinit var viewModelDetail: DetailCharacterViewModel
     private var adapter = CharactersPagingAdapter(this)
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -57,6 +55,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
     ): View? {
         bindingFilter = FragmentCharacterFilterBinding.inflate(inflater)
         viewModelList = ViewModelProvider(requireActivity(), viewModelFactory)[ListCharactersViewModel::class.java]
+        viewModelDetail = ViewModelProvider(requireActivity(), viewModelFactory)[DetailCharacterViewModel::class.java]
         binding = FragmentCharactersListBinding.inflate(inflater, container, false)
         return binding.root
     }

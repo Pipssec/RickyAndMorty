@@ -3,11 +3,12 @@ package com.example.rickyandmorty.presentation.fragments.locations.detail;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.rickyandmorty.data.api.NetworkApi;
-import com.example.rickyandmorty.data.api.response.location.LocationResponse;
+
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
 import com.example.rickyandmorty.domain.models.locations.Location;
 import com.example.rickyandmorty.domain.models.locations.LocationResult;
+import com.example.rickyandmorty.domain.repository.LocationRepository;
+import com.example.rickyandmorty.domain.usecases.location.LocationUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,28 +22,26 @@ import io.reactivex.schedulers.Schedulers;
 public class DetailLocationViewModel extends ViewModel {
     public MutableLiveData<LocationResult> selectedItemLocation = new MutableLiveData<>();
     public MutableLiveData<List<CharacterResult>> responseCharacters = new MutableLiveData<>();
-
     public MutableLiveData<String> locationName = new MutableLiveData<>();
     public List<String> listOfCharacters = new ArrayList<>();
     public String charactersIds;
+    LocationUseCase locationUseCase;
 
-    private final NetworkApi networkApi = NetworkApi.Companion.getInstance();
 
     @Inject
-    public DetailLocationViewModel(){}
+    public DetailLocationViewModel(LocationUseCase locationUseCase){
+        this.locationUseCase = locationUseCase;
+    }
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public void onClickItemCharacter(LocationResult location) {
         selectedItemLocation.setValue(location);
-        setListOfCharacters(location);
+        listOfCharacters.addAll(location.getResidents());
+        getCharacters();
+        fetchData();
     }
 
-    public void setListOfCharacters(LocationResult location) {
-        listOfCharacters
-                .addAll(location
-                        .getResidents());
-    }
 
     public void setLocationName(String name){
         locationName.setValue(name);
@@ -57,7 +56,7 @@ public class DetailLocationViewModel extends ViewModel {
 
     public void setResponseLocation(Location post) {
         selectedItemLocation.setValue(post.getResults().get(0));
-        setListOfCharacters(post.getResults().get(0));
+        onClickItemCharacter(post.getResults().get(0));
     }
 
     public MutableLiveData<LocationResult> getSelectedItemCharacter() {
@@ -69,7 +68,7 @@ public class DetailLocationViewModel extends ViewModel {
     }
 
     void fetchData() {
-        compositeDisposable.add(networkApi.getDetailCharacter(charactersIds)
+        compositeDisposable.add(locationUseCase.getDetailCharacter(charactersIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setResponseCharacter, throwable -> {
@@ -77,15 +76,13 @@ public class DetailLocationViewModel extends ViewModel {
     }
 
     void fetchDataLocation() {
-        compositeDisposable.add(networkApi.getDetailLocation(locationName.getValue())
+        compositeDisposable.add(locationUseCase.getDetailLocation(locationName.getValue())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setResponseLocation, throwable -> {
                 }));
     }
 
-    private void setResponseLocation(LocationResponse locationResponse) {
-    }
 
 
     public void getCharacters() {

@@ -5,7 +5,9 @@ import com.example.rickyandmorty.data.db.dao.CharacterDao
 import com.example.rickyandmorty.data.mappers.CharacterMapper
 import com.example.rickyandmorty.domain.models.character.CharacterModel
 import com.example.rickyandmorty.domain.models.character.CharacterResult
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
 import com.example.rickyandmorty.domain.repository.CharacterRepository
+import io.reactivex.Observable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +35,7 @@ class CharacterRepositoryImpl @Inject constructor(
         characterDao.insertCharacter(mapper.mapListResultResponseForListDb(list))
     }
 
-    override suspend fun getListCharacters(): List<CharacterResult> {
+    override  fun getListCharacters(): List<CharacterResult> {
         var listCharacters = emptyList<CharacterResult>()
         CoroutineScope(Dispatchers.IO).launch {
             listCharacters = (characterDao.getAllCharacters()).map {
@@ -43,6 +45,9 @@ class CharacterRepositoryImpl @Inject constructor(
         return listCharacters
     }
 
+    override fun getDetailEpisode(id: String): Observable<List<EpisodeResult>> {
+        return apiService.getDetailEpisode(id)
+    }
 
 
 }

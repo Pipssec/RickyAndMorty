@@ -23,7 +23,6 @@ import com.example.rickyandmorty.databinding.FragmentCharacterDetailBinding;
 import com.example.rickyandmorty.di.AppComponent;
 import com.example.rickyandmorty.di.ViewModelFactory;
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
-import com.example.rickyandmorty.domain.models.episodes.Episode;
 import com.example.rickyandmorty.domain.models.episodes.EpisodeResult;
 import com.example.rickyandmorty.presentation.adapters.character.detail.DetailCharacterEpisodesAdapter;
 import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel;
