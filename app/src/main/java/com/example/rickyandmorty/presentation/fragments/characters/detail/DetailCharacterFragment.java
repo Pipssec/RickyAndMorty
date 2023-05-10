@@ -24,6 +24,7 @@ import com.example.rickyandmorty.di.AppComponent;
 import com.example.rickyandmorty.di.ViewModelFactory;
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
 import com.example.rickyandmorty.domain.models.episodes.Episode;
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult;
 import com.example.rickyandmorty.presentation.adapters.character.detail.DetailCharacterEpisodesAdapter;
 import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel;
 import com.example.rickyandmorty.presentation.fragments.episodes.detail.DetailEpisodesFragment;
@@ -121,7 +122,7 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
 
 
     private void displayData() {
-        final Observer<List<Episode>> observer = listOfEpisodes -> {
+        final Observer<List<EpisodeResult>> observer = listOfEpisodes -> {
             DetailCharacterEpisodesAdapter adapter = new DetailCharacterEpisodesAdapter(requireContext(), listOfEpisodes, this);
             recyclerEpisodesIntoCharacter.setAdapter(adapter);
         };
@@ -140,7 +141,7 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
     }
 
     @Override
-    public void onItemClick(Episode episode) {
+    public void onItemClick(EpisodeResult episode) {
         episodeViewModel.onClickItemEpisodes(episode);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         fragmentManager

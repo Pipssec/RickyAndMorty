@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -19,7 +20,8 @@ import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.databinding.FragmentLocationFilterBinding
 import com.example.rickyandmorty.databinding.FragmentLocationsListBinding
-import com.example.rickyandmorty.domain.models.locations.Location
+import com.example.rickyandmorty.di.ViewModelFactory
+import com.example.rickyandmorty.domain.models.locations.LocationResult
 import com.example.rickyandmorty.presentation.adapters.location.list.LocationsPagingAdapter
 import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationFragment
 import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationViewModel
@@ -27,19 +29,23 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListener {
     private lateinit var binding: FragmentLocationsListBinding
     private lateinit var bindingFilter: FragmentLocationFilterBinding
     private var adapter = LocationsPagingAdapter(this)
-    private val listLocationsViewModel: ListLocationsViewModel by activityViewModels()
+    private lateinit var listLocationsViewModel: ListLocationsViewModel
     private val detailLocationViewModel: DetailLocationViewModel by activityViewModels()
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private var name = ""
     private var type = ""
     private var dimension = ""
 
+
     override fun onAttach(context: Context) {
-        (requireActivity().application as App).appComponent
+        (requireActivity().application as App).appComponent.injectListLocationsFragment(this)
         super.onAttach(context)
     }
 
@@ -50,6 +56,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLocationsListBinding.inflate(inflater, container, false)
+        listLocationsViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ListLocationsViewModel::class.java]
         bindingFilter = FragmentLocationFilterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -202,7 +209,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
         if (chipUnknownDimension.isChecked) dimension = "unknown"
     }
 
-    override fun onClick(location: Location) {
+    override fun onClick(location: LocationResult) {
         detailLocationViewModel.onClickItemCharacter(location)
         val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
         fragmentManager

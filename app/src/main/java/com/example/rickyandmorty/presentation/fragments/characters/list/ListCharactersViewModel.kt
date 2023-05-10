@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.example.rickyandmorty.domain.models.character.CharacterResult
-import com.example.rickyandmorty.domain.usecases.GetCharacterUseCase
+import com.example.rickyandmorty.domain.usecases.character.CharacterUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 
 class ListCharactersViewModel@Inject constructor(
-    private val getCharacterUseCase: GetCharacterUseCase
+    private val characterUseCase: CharacterUseCase
 ) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
 
@@ -23,7 +23,7 @@ class ListCharactersViewModel@Inject constructor(
 
     fun loadCharacters(name: String, status: String, gender: String, species: String) {
         characterFlow = Pager(PagingConfig(pageSize = 20, enablePlaceholders = false, initialLoadSize = 20)) {
-            getCharacterUseCase.getCharacter(name, status, gender, species)
+            characterUseCase.getCharacter(name, status, gender, species)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }

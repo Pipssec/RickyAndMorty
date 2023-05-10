@@ -7,6 +7,7 @@ import com.example.rickyandmorty.data.api.NetworkApi;
 import com.example.rickyandmorty.data.api.response.location.LocationResponse;
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
 import com.example.rickyandmorty.domain.models.locations.Location;
+import com.example.rickyandmorty.domain.models.locations.LocationResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class DetailLocationViewModel extends ViewModel {
-    public MutableLiveData<Location> selectedItemLocation = new MutableLiveData<>();
+    public MutableLiveData<LocationResult> selectedItemLocation = new MutableLiveData<>();
     public MutableLiveData<List<CharacterResult>> responseCharacters = new MutableLiveData<>();
 
     public MutableLiveData<String> locationName = new MutableLiveData<>();
@@ -32,12 +33,12 @@ public class DetailLocationViewModel extends ViewModel {
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public void onClickItemCharacter(Location location) {
+    public void onClickItemCharacter(LocationResult location) {
         selectedItemLocation.setValue(location);
         setListOfCharacters(location);
     }
 
-    public void setListOfCharacters(Location location) {
+    public void setListOfCharacters(LocationResult location) {
         listOfCharacters
                 .addAll(location
                         .getResidents());
@@ -54,12 +55,12 @@ public class DetailLocationViewModel extends ViewModel {
 
     }
 
-    public void setResponseLocation(LocationResponse post) {
+    public void setResponseLocation(Location post) {
         selectedItemLocation.setValue(post.getResults().get(0));
         setListOfCharacters(post.getResults().get(0));
     }
 
-    public MutableLiveData<Location> getSelectedItemCharacter() {
+    public MutableLiveData<LocationResult> getSelectedItemCharacter() {
         return selectedItemLocation;
     }
 
@@ -81,6 +82,9 @@ public class DetailLocationViewModel extends ViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setResponseLocation, throwable -> {
                 }));
+    }
+
+    private void setResponseLocation(LocationResponse locationResponse) {
     }
 
 

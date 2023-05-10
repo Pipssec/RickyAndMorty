@@ -23,6 +23,7 @@ import com.example.rickyandmorty.di.AppComponent;
 import com.example.rickyandmorty.di.ViewModelFactory;
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
 import com.example.rickyandmorty.domain.models.locations.Location;
+import com.example.rickyandmorty.domain.models.locations.LocationResult;
 import com.example.rickyandmorty.presentation.adapters.location.detail.DetailLocationCharacterAdapter;
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterFragment;
 import com.example.rickyandmorty.presentation.fragments.characters.detail.DetailCharacterViewModel;
@@ -72,7 +73,7 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
         recyclerCharactersIntoLocation = binding.rvDetailLocationCharacters;
         recyclerCharactersIntoLocation.setHasFixedSize(true);
         hideBotNav();
-        final Observer<Location> observer = location -> {
+        final Observer<LocationResult> observer = location -> {
             assert location != null;
             binding.tvNameLocationDetail.setText(location.getName());
             binding.tvDimensionDetail.setText(location.getDimension());

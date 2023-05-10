@@ -1,11 +1,11 @@
-package com.example.rickyandmorty.domain.usecases
+package com.example.rickyandmorty.domain.usecases.character
 
 import android.app.Application
 import com.example.rickyandmorty.data.datasource.CharacterDataSource
 import com.example.rickyandmorty.data.repository.CharacterRepositoryImpl
 import javax.inject.Inject
 
-class GetCharacterUseCase @Inject constructor(
+class CharacterUseCase @Inject constructor(
     private val repository: CharacterRepositoryImpl,
     private val application: Application
 ) {

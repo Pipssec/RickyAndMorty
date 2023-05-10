@@ -7,22 +7,24 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.rickyandmorty.data.datasource.LocationDataSource
-import com.example.rickyandmorty.domain.models.locations.Location
+import com.example.rickyandmorty.domain.models.locations.LocationResult
+import com.example.rickyandmorty.domain.usecases.location.LocationUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-class ListLocationsViewModel@Inject constructor(): ViewModel() {
+class ListLocationsViewModel@Inject constructor(
+    private val locationUseCase: LocationUseCase
+): ViewModel() {
     val errorMessage = MutableLiveData<String>()
 
-    var locationFlow: Flow<PagingData<Location>> = emptyFlow()
+    var locationFlow: Flow<PagingData<LocationResult>> = emptyFlow()
 
     fun loadLocations(name: String, type: String, dimension: String) {
         locationFlow = Pager(PagingConfig(pageSize = 1)) {
-            LocationDataSource(name, type, dimension)
+            locationUseCase.getLocation(name, type, dimension)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }

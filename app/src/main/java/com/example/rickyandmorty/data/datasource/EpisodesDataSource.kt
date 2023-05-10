@@ -1,32 +1,45 @@
 package com.example.rickyandmorty.data.datasource
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.rickyandmorty.data.api.NetworkApi
 import com.example.rickyandmorty.data.api.ext.backendException
-import com.example.rickyandmorty.domain.models.episodes.Episode
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
+import com.example.rickyandmorty.domain.repository.EpisodeRepository
+import javax.inject.Inject
 
 
-class EpisodesDataSource(
+class EpisodesDataSource@Inject constructor(
+    private val repository: EpisodeRepository,
+    private val application: Application,
     private val name: String,
     private val episode: String
-) : PagingSource<Int, Episode>() {
+) : PagingSource<Int, EpisodeResult>() {
 
     companion object {
         private const val START_PAGE = 1
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Episode> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, EpisodeResult> {
         try {
+            var nextKey: Int? = 0
             val page = params.key ?: START_PAGE
-            val networkApi = NetworkApi.getInstance()
-            val response = networkApi.getAllEpisode(page, name, episode)
-            val episodes = response.results
+            val responseData = arrayListOf<EpisodeResult>()
+            if(hasConnected(application.applicationContext)){
+                val response = repository.getEpisode(page,name,episode)
+                responseData.addAll(response.results)
+                nextKey = if(response.info.next == null && responseData.isNotEmpty()) null else page + 1
+            } else {
+                val listLocations = repository.getListEpisodesDb()
+                responseData.addAll(listLocations)
+                nextKey = if(responseData.isNotEmpty()) null else page + 1
+            }
 
             val prevKey = if (page == START_PAGE) null else page - 1
-            val nextKey = if (response.info.next == null) null else page+1
             return LoadResult.Page(
-                data = episodes,
+                data = responseData,
                 prevKey = prevKey,
                 nextKey = nextKey
             )
@@ -35,5 +48,11 @@ class EpisodesDataSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Episode>): Int? = null
+    override fun getRefreshKey(state: PagingState<Int, EpisodeResult>): Int? = null
+
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
+    }
 }

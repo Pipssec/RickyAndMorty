@@ -11,7 +11,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -20,7 +20,8 @@ import com.example.rickyandmorty.app.App
 import com.example.rickyandmorty.data.api.exception.BackendException
 import com.example.rickyandmorty.databinding.FragmentEpisodeFilterBinding
 import com.example.rickyandmorty.databinding.FragmentEpisodesListBinding
-import com.example.rickyandmorty.domain.models.episodes.Episode
+import com.example.rickyandmorty.di.ViewModelFactory
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
 import com.example.rickyandmorty.presentation.adapters.episodes.EpisodesPagingAdapter
 import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewModel
 import com.example.rickyandmorty.presentation.fragments.episodes.detail.DetailEpisodesFragment
@@ -28,12 +29,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
     private lateinit var binding: FragmentEpisodesListBinding
     private lateinit var bindingFilter: FragmentEpisodeFilterBinding
-    private val episodesViewModel: EpisodesViewModel by activityViewModels()
+    private lateinit var episodesViewModel: EpisodesViewModel
     private var adapter = EpisodesPagingAdapter(this)
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private var name = ""
     private var episode = ""
 
@@ -48,6 +52,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         savedInstanceState: Bundle?
     ): View? {
         bindingFilter = FragmentEpisodeFilterBinding.inflate(inflater)
+        episodesViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[EpisodesViewModel::class.java]
         binding = FragmentEpisodesListBinding.inflate(inflater)
         return binding.root
     }
@@ -206,7 +211,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         }
     }
 
-    override fun onClick(episode: Episode) {
+    override fun onClick(episode: EpisodeResult) {
         episodesViewModel.onClickItemEpisodes(episode)
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.containerFragment, DetailEpisodesFragment())

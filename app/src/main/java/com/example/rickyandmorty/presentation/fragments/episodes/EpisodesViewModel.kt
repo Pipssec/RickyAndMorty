@@ -8,9 +8,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.rickyandmorty.data.api.NetworkApi
-import com.example.rickyandmorty.data.datasource.EpisodesDataSource
 import com.example.rickyandmorty.domain.models.character.CharacterResult
-import com.example.rickyandmorty.domain.models.episodes.Episode
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
+import com.example.rickyandmorty.domain.usecases.episode.EpisodeUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -20,9 +20,11 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-class EpisodesViewModel@Inject constructor(): ViewModel() {
+class EpisodesViewModel@Inject constructor(
+    private val episodeUseCase: EpisodeUseCase
+): ViewModel() {
 
-    val selectedItemLocation = MutableLiveData<Episode>()
+    val selectedItemLocation = MutableLiveData<EpisodeResult>()
     val responseCharacterResult = MutableLiveData<List<CharacterResult?>?>()
     private val listOfCharacters = mutableListOf<List<String>>()
     private var charactersIds: String? = null
@@ -32,9 +34,9 @@ class EpisodesViewModel@Inject constructor(): ViewModel() {
 
     val errorMessage = MutableLiveData<String>()
 
-    var episodeFlow: Flow<PagingData<Episode>> = emptyFlow()
+    var episodeFlow: Flow<PagingData<EpisodeResult>> = emptyFlow()
 
-    fun onClickItemEpisodes(episode: Episode) {
+    fun onClickItemEpisodes(episode: EpisodeResult) {
         selectedItemLocation.value = episode
         listOfCharacters.add(episode.characters)
     }
@@ -56,7 +58,7 @@ class EpisodesViewModel@Inject constructor(): ViewModel() {
 
     fun loadAllEpisodes(name: String, episode: String) {
         episodeFlow = Pager(PagingConfig(pageSize = 1)) {
-            EpisodesDataSource(name = name,episode = episode)
+            episodeUseCase.getEpisodes(name, episode)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }

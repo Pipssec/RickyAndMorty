@@ -12,6 +12,14 @@ import com.example.rickyandmorty.presentation.fragments.episodes.EpisodesViewMod
 import com.example.rickyandmorty.presentation.fragments.locations.detail.DetailLocationViewModel
 import com.example.rickyandmorty.presentation.fragments.locations.list.ListLocationsViewModel
 import com.example.rickyandmorty.data.db.CharacterDatabase
+import com.example.rickyandmorty.data.db.EpisodeDatabase
+import com.example.rickyandmorty.data.db.LocationDatabase
+import com.example.rickyandmorty.data.db.dao.EpisodeDao
+import com.example.rickyandmorty.data.db.dao.LocationDao
+import com.example.rickyandmorty.data.repository.EpisodeRepositoryImpl
+import com.example.rickyandmorty.domain.repository.EpisodeRepository
+import com.example.rickyandmorty.domain.repository.LocationRepository
+import com.example.rickyandmorty.data.repository.LocationRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -21,7 +29,10 @@ import dagger.multibindings.IntoMap
 interface AppModule {
     @Binds
     fun bindCharacterRepository(repository: CharacterRepositoryImpl): CharacterRepository
-
+    @Binds
+    fun bindEpisodeRepository(repository: EpisodeRepositoryImpl): EpisodeRepository
+    @Binds
+    fun bindLocationRepository(repository: LocationRepositoryImpl): LocationRepository
     @Binds
     @IntoMap
     @ViewModelKey(DetailCharacterViewModel::class)
@@ -56,6 +67,15 @@ interface AppModule {
         @Provides
         fun provideCharacterDao(application: Application): CharacterDao {
             return CharacterDatabase.getMainDatabase(application).getCharacterDao()
+        }
+
+        @Provides
+        fun provideEpisodeDao(application: Application): EpisodeDao {
+            return EpisodeDatabase.getMainDatabase(application).getEpisodeDao()
+        }
+        @Provides
+        fun provideLocationDao(application: Application): LocationDao {
+            return LocationDatabase.getMainDatabase(application).getLocationDao()
         }
     }
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickyandmorty.R;
 import com.example.rickyandmorty.domain.models.episodes.Episode;
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ import java.util.List;
 
 public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<EpisodesViewHolder> {
     Context context;
-    List<Episode> postsList;
+    List<EpisodeResult> postsList;
 
     EpisodeListener listener;
 
-    public DetailCharacterEpisodesAdapter(Context context, List<Episode> postsList, EpisodeListener listener) {
+    public DetailCharacterEpisodesAdapter(Context context, List<EpisodeResult> postsList, EpisodeListener listener) {
         this.context = context;
         this.postsList = postsList;
         this.listener = listener;
@@ -37,7 +38,7 @@ public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<Episode
 
     @Override
     public void onBindViewHolder(@NonNull EpisodesViewHolder holder, int position) {
-        Episode item = postsList.get(position);
+        EpisodeResult item = postsList.get(position);
         holder.tvNameEpisode.setText((postsList.get(position).getName()));
         holder.tvNumberEpisode.setText((postsList.get(position).getEpisode()));
         holder.tvAirDateEpisode.setText(postsList.get(position).getAir_date());
@@ -56,6 +57,6 @@ public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<Episode
     }
 
     public interface EpisodeListener{
-        void onItemClick(Episode episode);
+        void onItemClick(EpisodeResult episode);
     }
 }

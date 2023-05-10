@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.rickyandmorty.data.api.NetworkApi;
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
-import com.example.rickyandmorty.domain.models.episodes.Episode;
+import com.example.rickyandmorty.domain.models.episodes.EpisodeResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DetailCharacterViewModel extends ViewModel {
     public MutableLiveData<CharacterResult> selectedItemCharacter = new MutableLiveData<>();
-    public MutableLiveData<List<Episode>> responseEpisodes = new MutableLiveData<>();
+    public MutableLiveData<List<EpisodeResult>> responseEpisodes = new MutableLiveData<>();
     public List<String> listOfEpisodes = new ArrayList<>();
     public String episodesIds;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -37,7 +37,7 @@ public class DetailCharacterViewModel extends ViewModel {
 
     }
 
-    public void setListOfEpisodes(List<Episode> post){
+    public void setListOfEpisodes(List<EpisodeResult> post){
         responseEpisodes.setValue(post);
     }
 
