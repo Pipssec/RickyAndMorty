@@ -1,6 +1,7 @@
 package com.example.rickyandmorty.presentation.fragments.episodes.list
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -82,23 +83,49 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val nameText = query.toString()
-                name = nameText
-                loadAllEpisodes(name)
-                return true
+                if(hasConnected(requireContext())){
+                    name = nameText
+                    loadAllEpisodes(name)
+                    return true
+                }else{
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_connect),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
+                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val nameText = newText.toString()
-                name = nameText
-                loadAllEpisodes(name)
-                return true
+                if(hasConnected(requireContext())){
+                    name = nameText
+                    loadAllEpisodes(name)
+                    return true
+                }else{
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_connect),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
+                }
             }
         })
     }
 
     private fun initEpisodesFilter() {
         binding.btnEpisodesFilter.setOnClickListener {
-            openEpisodesFilter()
+            if(hasConnected(requireContext())){
+                openEpisodesFilter()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_connect),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -109,12 +136,12 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
             arrayOf("E01", "E02", "E03", "E04", "E05", "E06", "E07", "E08", "E09", "E10", "E11")
         var selectSeason = ""
         var selectEpisode = ""
-        val seasonsAdapter = ArrayAdapter<String>(
+        val seasonsAdapter = ArrayAdapter(
             requireActivity(),
             android.R.layout.simple_spinner_dropdown_item,
             seasonsArray
         )
-        val episodeAdapter = ArrayAdapter<String>(
+        val episodeAdapter = ArrayAdapter(
             requireActivity(),
             android.R.layout.simple_spinner_dropdown_item,
             episodeArray
@@ -224,5 +251,11 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
         val bottomNavigationView =
             requireActivity().findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
     }
 }

@@ -1,6 +1,7 @@
 package com.example.rickyandmorty.presentation.fragments.characters.list
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -75,14 +76,32 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val name = query.toString()
-                loadAllCharacters(name)
-                return true
+                if(hasConnected(requireContext())){
+                    loadAllCharacters(name)
+                    return true
+                }else{
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_connect),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
+                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val name = newText.toString()
-                loadAllCharacters(name)
-                return true
+                if(hasConnected(requireContext())){
+                    loadAllCharacters(name)
+                    return true
+                }else{
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_connect),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
+                }
             }
         })
     }
@@ -138,7 +157,16 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
 
     private fun initCharactersFilter() {
         binding.btnCharactersFilter.setOnClickListener {
-            openCharacterFilter()
+            if(hasConnected(requireContext())){
+                openCharacterFilter()
+            }else{
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_connect),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         }
     }
 
@@ -218,6 +246,12 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
             }
             binding.swipeRefreshCharacters.isRefreshing = false
         }
+    }
+
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
     }
 
 }

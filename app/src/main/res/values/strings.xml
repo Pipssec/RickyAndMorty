@@ -45,4 +45,5 @@
     <string name="season">Сезон</string>
     <string name="Reset">Сброс</string>
     <string name="ex_location">Название локации</string>
+    <string name="error_connect">Отсутствует интернет-соединение</string>
 </resources>

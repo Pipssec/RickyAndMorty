@@ -1,6 +1,7 @@
 package com.example.rickyandmorty.presentation.fragments.locations.list
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -136,14 +137,32 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val name = query.toString()
-                loadAllLocations(name)
-                return true
+                if (hasConnected(requireContext())) {
+                    loadAllLocations(name)
+                    return true
+                }else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_connect),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
+                }
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val name = newText.toString()
-                loadAllLocations(name)
-                return true
+                if (hasConnected(requireContext())) {
+                    loadAllLocations(name)
+                    return true
+                }else {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_connect),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return true
+                }
             }
         })
     }
@@ -156,7 +175,15 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
 
     private fun initLocationsFilter() {
         binding.btnLocationsFilter.setOnClickListener {
-            openLocationsFilter()
+            if(hasConnected(requireContext())){
+                openLocationsFilter()
+            }else{
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.error_connect),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -220,5 +247,10 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
             )
             .addToBackStack("listLocation")
             .commit()
+    }
+    private fun hasConnected(context: Context): Boolean{
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
     }
 }
