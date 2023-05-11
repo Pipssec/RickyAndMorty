@@ -18,7 +18,7 @@ class EpisodeMapper @Inject constructor() {
         prev = infoResponse?.prev ?: EMPTY_STRING
     )
 
-    fun mapResultsResponseForResults(resultResponse: EpisodeResultResponse?) = EpisodeResult(
+    private fun mapResultsResponseForResults(resultResponse: EpisodeResultResponse?) = EpisodeResult(
         air_date = resultResponse?.air_date ?: EMPTY_STRING,
         characters = resultResponse?.characters ?: emptyList(),
         created = resultResponse?.created ?: EMPTY_STRING,
@@ -37,7 +37,7 @@ class EpisodeMapper @Inject constructor() {
         results = mapListResultsResponseForListResults(locationDto.results)
     )
 
-    fun mapEpisodeResultResponseForEpisodeResultDb(episodeResult: EpisodeResult): EpisodeDbModel {
+    private fun mapEpisodeResultResponseForEpisodeResultDb(episodeResult: EpisodeResult): EpisodeDbModel {
         return EpisodeDbModel (
             air_date = episodeResult.air_date,
             created = episodeResult.created,

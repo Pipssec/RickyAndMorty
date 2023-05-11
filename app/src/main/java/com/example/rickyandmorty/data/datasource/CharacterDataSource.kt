@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickyandmorty.data.api.ext.backendException
-import com.example.rickyandmorty.domain.models.character.CharacterInfo
 import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.repository.CharacterRepository
 import javax.inject.Inject
@@ -36,9 +35,9 @@ class CharacterDataSource@Inject constructor(
             } else {
                 val listCharacters = repository.getListCharacters()
                 responseData.addAll(listCharacters)
-                Log.d("Character", responseData.size.toString())
-                nextKey = if(responseData.isNotEmpty()) null else page+1
-                Log.d("Character", nextKey.toString())
+                Log.d("CharacterRes", responseData.size.toString())
+                nextKey = if(responseData.isEmpty()) page+1 else null
+                Log.d("CharacterKey", nextKey.toString())
             }
 
             val prevKey = if (page == START_PAGE) null else page - 1

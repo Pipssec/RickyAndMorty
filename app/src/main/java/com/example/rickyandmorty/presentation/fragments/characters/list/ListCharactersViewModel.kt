@@ -26,6 +26,7 @@ class ListCharactersViewModel@Inject constructor(
             characterUseCase.getCharacter(name, status, gender, species)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+
     }
 
 }
