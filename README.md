@@ -36,7 +36,7 @@
 
 При запуске приложения запускается Splash Screen(Экран заставки)
 
-![Screenshot_20230511_215823](https://github.com/Pipssec/RickyAndMorty/assets/98549196/72b7bb65-9902-4ac8-a82e-f934c427bce1) width="200" height="400"
+<img src="https://github.com/Pipssec/RickyAndMorty/assets/98549196/72b7bb65-9902-4ac8-a82e-f934c427bce1" width="200" height="400">
 
 
 ## Скриншоты
