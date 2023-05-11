@@ -3,7 +3,7 @@
 Приложение написано по мотивам мультсериала "Рик и Морти". В качестве основного языка разработки взят Kotlin, также используется Java. 
 
 ## Оглавление
-* [Основная информация](#general-info)
+* [Основная информация](https://github.com/Pipssec/RickyAndMorty/tree/master/README.md#основная-информация)
 
 * [Технологии](https://github.com/Grifalionys/RickandMorty/blob/master/README.md#%D1%82%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B8)
 
