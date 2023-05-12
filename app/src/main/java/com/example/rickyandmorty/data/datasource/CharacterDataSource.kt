@@ -3,7 +3,6 @@ package com.example.rickyandmorty.data.datasource
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.rickyandmorty.data.api.ext.backendException

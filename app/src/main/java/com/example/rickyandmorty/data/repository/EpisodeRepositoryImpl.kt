@@ -9,9 +9,6 @@ import com.example.rickyandmorty.domain.models.episodes.Episode
 import com.example.rickyandmorty.domain.models.episodes.EpisodeResult
 import com.example.rickyandmorty.domain.repository.EpisodeRepository
 import io.reactivex.Observable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EpisodeRepositoryImpl @Inject constructor(
