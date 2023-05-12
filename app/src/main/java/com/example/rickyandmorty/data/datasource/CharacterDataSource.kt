@@ -25,21 +25,17 @@ class CharacterDataSource@Inject constructor(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterResult> {
         try {
-            var nextKey: Int? = 1
+            var nextKey: Int? = 0
             val page = params.key ?: START_PAGE
-            val responseData = arrayListOf<CharacterResult>()
-            if(hasConnected(application.applicationContext)) {
+            val responseData = if(hasConnected(application.applicationContext)) {
                 val response = repository.getCharacter(page,name,gender,status,species)
-                responseData.addAll(response.result)
-                nextKey = if(response.info.next == null && response.result.isEmpty()) null else page+1
+                nextKey = if(response.info.next == null) null else page+1
+                response.result
             } else {
-                val listCharacters = repository.getListCharacters()
-                responseData.addAll(listCharacters)
-                Log.d("CharacterRes", responseData.size.toString())
-                nextKey = if(responseData.isEmpty()) page+1 else null
-                Log.d("CharacterKey", nextKey.toString())
+                val listCharacters = repository.getListCharacters((page-1) * params.loadSize, params.loadSize,name,gender,status,species)
+                nextKey = if(listCharacters.isNotEmpty()) page+1 else null
+                listCharacters
             }
-
             val prevKey = if (page == START_PAGE) null else page - 1
             return LoadResult.Page(
                 data = responseData,

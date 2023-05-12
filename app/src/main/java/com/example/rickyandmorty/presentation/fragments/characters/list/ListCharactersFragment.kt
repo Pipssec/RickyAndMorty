@@ -63,6 +63,10 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.rvListCharacters.adapter = adapter
+        viewModelList.errorMessage.observe(requireActivity()) {
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+        }
         loadAllCharacters(name)
         showBotNav()
         findByName()
@@ -76,32 +80,15 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val name = query.toString()
-                if(hasConnected(requireContext())){
-                    loadAllCharacters(name)
-                    return true
-                }else{
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.error_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return true
-                }
+                loadAllCharacters(name)
+                return true
+
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val name = newText.toString()
-                if(hasConnected(requireContext())){
-                    loadAllCharacters(name)
-                    return true
-                }else{
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.error_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return true
-                }
+                loadAllCharacters(name)
+                return true
             }
         })
     }
@@ -138,11 +125,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
     }
 
     private fun loadAllCharacters(name: String) {
-        binding.rvListCharacters.adapter = adapter
-        viewModelList.errorMessage.observe(requireActivity()) {
-            Toast.makeText(requireContext(), "Error1", Toast.LENGTH_SHORT).show()
-        }
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             viewModelList.loadCharacters(name, status, gender, species)
             viewModelList.characterFlow.collectLatest(adapter::submitData)
         }
@@ -157,16 +140,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
 
     private fun initCharactersFilter() {
         binding.btnCharactersFilter.setOnClickListener {
-            if(hasConnected(requireContext())){
-                openCharacterFilter()
-            }else{
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_connect),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
+            openCharacterFilter()
         }
     }
 

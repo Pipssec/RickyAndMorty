@@ -11,7 +11,7 @@ interface CharacterRepository {
 
     suspend fun insertCharacter(list: List<CharacterResult>)
 
-    fun getListCharacters(): List<CharacterResult>
+    suspend fun getListCharacters(offset: Int, limit: Int, name: String, gender: String, status: String, species: String): List<CharacterResult>
 
     fun getDetailEpisode(id: String): Observable<List<EpisodeResult>>
 

@@ -55,7 +55,7 @@ class EpisodesViewModel@Inject constructor(
     }
 
     fun loadAllEpisodes(name: String, episode: String) {
-        episodeFlow = Pager(PagingConfig(pageSize = 1)) {
+        episodeFlow = Pager(PagingConfig(pageSize = 10, enablePlaceholders = false, initialLoadSize = 10)) {
             episodeUseCase.getEpisodes(name, episode)
         }.flow.cachedIn(viewModelScope)
             .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

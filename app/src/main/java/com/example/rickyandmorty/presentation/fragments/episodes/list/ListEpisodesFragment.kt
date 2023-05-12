@@ -60,6 +60,10 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.rvListEpisodes.adapter = adapter
+        episodesViewModel.errorMessage.observe(requireActivity()) {
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+        }
         loadAllEpisodes(name)
         initProgressBar()
         findByName()
@@ -83,49 +87,23 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val nameText = query.toString()
-                if(hasConnected(requireContext())){
-                    name = nameText
-                    loadAllEpisodes(name)
-                    return true
-                }else{
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.error_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return true
-                }
+                name = nameText
+                loadAllEpisodes(name)
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val nameText = newText.toString()
-                if(hasConnected(requireContext())){
-                    name = nameText
-                    loadAllEpisodes(name)
-                    return true
-                }else{
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.error_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return true
-                }
+                name = nameText
+                loadAllEpisodes(name)
+                return true
             }
         })
     }
 
     private fun initEpisodesFilter() {
         binding.btnEpisodesFilter.setOnClickListener {
-            if(hasConnected(requireContext())){
-                openEpisodesFilter()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_connect),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            openEpisodesFilter()
         }
     }
 
@@ -197,11 +175,7 @@ class ListEpisodesFragment : Fragment(), EpisodesPagingAdapter.EpisodeListener {
     }
 
     private fun loadAllEpisodes(name: String) {
-        binding.rvListEpisodes.adapter = adapter
-        episodesViewModel.errorMessage.observe(requireActivity()) {
-            Toast.makeText(requireContext(), "Error1", Toast.LENGTH_SHORT).show()
-        }
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             episodesViewModel.loadAllEpisodes(name, episode)
             episodesViewModel.episodeFlow.collectLatest(adapter::submitData)
         }

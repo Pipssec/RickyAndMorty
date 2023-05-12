@@ -64,6 +64,10 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.rvListLocations.adapter = adapter
+        listLocationsViewModel.errorMessage.observe(requireActivity()) {
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+        }
         loadAllLocations(name)
         initProgressBar()
         findByName()
@@ -90,11 +94,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
     }
 
     private fun loadAllLocations(name: String) {
-        binding.rvListLocations.adapter = adapter
-        listLocationsViewModel.errorMessage.observe(requireActivity()) {
-            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
-        }
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             listLocationsViewModel.loadLocations(name, type, dimension)
             listLocationsViewModel.locationFlow.collectLatest(adapter::submitData)
         }
@@ -137,32 +137,14 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val name = query.toString()
-                if (hasConnected(requireContext())) {
-                    loadAllLocations(name)
-                    return true
-                }else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.error_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return true
+                loadAllLocations(name)
+                return true
                 }
-            }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val name = newText.toString()
-                if (hasConnected(requireContext())) {
-                    loadAllLocations(name)
-                    return true
-                }else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.error_connect),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return true
-                }
+                loadAllLocations(name)
+                return true
             }
         })
     }
@@ -175,15 +157,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
 
     private fun initLocationsFilter() {
         binding.btnLocationsFilter.setOnClickListener {
-            if(hasConnected(requireContext())){
-                openLocationsFilter()
-            }else{
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.error_connect),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            openLocationsFilter()
         }
     }
 
