@@ -26,16 +26,14 @@ class LocationDataSource@Inject constructor(
        return try {
             var nextKey: Int? = 0
             val page = params.key ?: START_PAGE
-            val responseData = arrayListOf<LocationResult>()
-            if (hasConnected(application.applicationContext)) {
+            val responseData = if (hasConnected(application.applicationContext)) {
                 val response = repository.getLocation(page, name, type, dimension)
-                responseData.addAll(response.results)
-                nextKey =
-                    if (response.info.next == null && responseData.isNotEmpty()) null else page + 1
+                nextKey = if (response.info.next == null ) null else page + 1
+                response.results
             } else {
-                val listLocations = repository.getListLocationsDb()
-                responseData.addAll(listLocations)
-                nextKey = if (responseData.isNotEmpty()) null else page + 1
+                val listLocations = repository.getListLocationsDb((page-1) * params.loadSize, params.loadSize, name, type, dimension)
+                nextKey = if (listLocations.isNotEmpty()) page + 1 else null
+                listLocations
             }
             val prevKey = if (page == START_PAGE) null else page - 1
             LoadResult.Page(
