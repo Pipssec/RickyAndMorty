@@ -18,7 +18,7 @@ class EpisodeMapper @Inject constructor() {
         prev = infoResponse?.prev ?: EMPTY_STRING
     )
 
-    private fun mapResultsResponseForResults(resultResponse: EpisodeResultResponse?) = EpisodeResult(
+    fun mapResultsResponseForResults(resultResponse: EpisodeResultResponse?) = EpisodeResult(
         air_date = resultResponse?.air_date ?: EMPTY_STRING,
         characters = resultResponse?.characters ?: emptyList(),
         created = resultResponse?.created ?: EMPTY_STRING,
@@ -32,12 +32,12 @@ class EpisodeMapper @Inject constructor() {
         mapResultsResponseForResults(it)
     }
 
-    fun mapEpisodeResponseForEpisode(locationDto: EpisodeResponse) = Episode(
-        info = mapInfoResponseForInfo(locationDto.info),
-        results = mapListResultsResponseForListResults(locationDto.results)
+    fun mapEpisodeResponseForEpisode(episodeResponse: EpisodeResponse) = Episode(
+        info = mapInfoResponseForInfo(episodeResponse.info),
+        results = mapListResultsResponseForListResults(episodeResponse.results)
     )
 
-    private fun mapEpisodeResultResponseForEpisodeResultDb(episodeResult: EpisodeResult): EpisodeDbModel {
+    fun mapEpisodeResultForEpisodeResultDb(episodeResult: EpisodeResult): EpisodeDbModel {
         return EpisodeDbModel (
             air_date = episodeResult.air_date,
             created = episodeResult.created,
@@ -48,18 +48,18 @@ class EpisodeMapper @Inject constructor() {
         )
     }
     fun mapListResultResponseForListDb(list: List<EpisodeResult>) = list.map {
-        mapEpisodeResultResponseForEpisodeResultDb(it)
+        mapEpisodeResultForEpisodeResultDb(it)
     }
 
-    fun mapEpisodeResultDbForEpisodeResult(episodeResult: EpisodeDbModel): EpisodeResult{
+    fun mapEpisodeResultDbForEpisodeResult(episodeDbModel: EpisodeDbModel): EpisodeResult{
         return EpisodeResult(
-            air_date = episodeResult.air_date,
+            air_date = episodeDbModel.air_date,
             characters = emptyList(),
-            episode = episodeResult.episode,
-            created = episodeResult.created,
-            id = episodeResult.id,
-            name = episodeResult.name,
-            url = episodeResult.url
+            episode = episodeDbModel.episode,
+            created = episodeDbModel.created,
+            id = episodeDbModel.id,
+            name = episodeDbModel.name,
+            url = episodeDbModel.url
         )
     }
 

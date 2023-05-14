@@ -1,5 +1,8 @@
 package com.example.rickyandmorty.data.mappers
 
+import com.example.rickyandmorty.data.api.response.character.CharacterLocationResponse
+import com.example.rickyandmorty.data.api.response.character.CharacterOriginResponse
+import com.example.rickyandmorty.data.api.response.character.CharacterResultResponse
 import com.example.rickyandmorty.data.db.entity.character.CharacterDbModel
 import com.example.rickyandmorty.domain.models.character.CharacterLocation
 import com.example.rickyandmorty.domain.models.character.CharacterOrigin
@@ -12,7 +15,46 @@ internal class CharacterMapperTest {
     private val characterMapper = CharacterMapper()
 
     @Test
-    fun modelToDbCharacter() {
+    fun modelResponseToModelResult() {
+        val characterResultResponse = CharacterResultResponse(
+            id = CHARACTER_ID,
+            name = CHARACTER_NAME,
+            status = CHARACTER_STATUS,
+            species = CHARACTER_SPECIES,
+            type = CHARACTER_TYPE,
+            gender = CHARACTER_GENDER,
+            origin = CharacterOriginResponse(CHARACTER_ORIGIN_NAME, CHARACTER_ORIGIN_URL),
+            location = CharacterLocationResponse(CHARACTER_LOCATION_NAME, CHARACTER_LOCATION_URL),
+            image = CHARACTER_IMAGE,
+            episode = CHARACTER_EPISODES,
+            url = CHARACTER_URL,
+            created = CHARACTER_CREATED,
+        )
+
+        val expectedCharacterResult = CharacterResult(
+            id = CHARACTER_ID,
+            name = CHARACTER_NAME,
+            status = CHARACTER_STATUS,
+            species = CHARACTER_SPECIES,
+            type = CHARACTER_TYPE,
+            gender = CHARACTER_GENDER,
+            origin = CharacterOrigin(CHARACTER_ORIGIN_NAME, CHARACTER_ORIGIN_URL),
+            location = CharacterLocation(CHARACTER_LOCATION_NAME, CHARACTER_LOCATION_URL),
+            image = CHARACTER_IMAGE,
+            episode = CHARACTER_EPISODES,
+            url = CHARACTER_URL,
+            created = CHARACTER_CREATED,
+        )
+
+        val actualCharacterResult : CharacterResult = characterMapper.mapResultResponseForResult(characterResultResponse)
+
+        assertEquals(expectedCharacterResult, actualCharacterResult)
+
+
+    }
+
+    @Test
+    fun modelResultToDbCharacterModel() {
 
         val characterResult = CharacterResult(
             id = CHARACTER_ID,
@@ -51,6 +93,44 @@ internal class CharacterMapperTest {
 
     }
 
+    @Test
+    fun dbCharacterModelToCharacterResult() {
+        val characterDbModel = CharacterDbModel(
+            id = CHARACTER_ID,
+            name = CHARACTER_NAME,
+            status = CHARACTER_STATUS,
+            species = CHARACTER_SPECIES,
+            type = CHARACTER_TYPE,
+            gender = CHARACTER_GENDER,
+            origin = CHARACTER_ORIGIN_NAME,
+            location = CHARACTER_LOCATION_NAME,
+            image = CHARACTER_IMAGE,
+            url = CHARACTER_URL,
+            created = CHARACTER_CREATED,
+        )
+
+        val expectedCharacterResult = CharacterResult(
+            id = CHARACTER_ID,
+            name = CHARACTER_NAME,
+            status = CHARACTER_STATUS,
+            species = CHARACTER_SPECIES,
+            type = CHARACTER_TYPE,
+            gender = CHARACTER_GENDER,
+            origin = CharacterOrigin(CHARACTER_ORIGIN_NAME, ""),
+            location = CharacterLocation(CHARACTER_LOCATION_NAME, ""),
+            image = CHARACTER_IMAGE,
+            episode = emptyList(),
+            url = CHARACTER_URL,
+            created = CHARACTER_CREATED,
+        )
+
+        val actualCharacterResult: CharacterResult = characterMapper.mapCharacterResultDbForCharacterResult(characterDbModel)
+
+        assertEquals(expectedCharacterResult, actualCharacterResult)
+
+
+    }
+
 
     companion object {
         private const val CHARACTER_ID = 123
@@ -69,7 +149,6 @@ internal class CharacterMapperTest {
             "https://test.com/api/episode/2",
             "https://test.com/api/episode/3",
         )
-        private val CHARACTER_EPISODE_IDS = listOf(1, 2, 3)
         private const val CHARACTER_URL = "some url"
         private const val CHARACTER_CREATED = "some created"
     }

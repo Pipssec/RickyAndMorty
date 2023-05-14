@@ -7,31 +7,31 @@ import com.example.rickyandmorty.domain.models.character.*
 import javax.inject.Inject
 
 class CharacterMapper @Inject constructor() {
-     private fun mapCharacterResponseForInfo(characterResponseInfo: CharacterInfoResponse? ) = CharacterInfo(
-            pages = characterResponseInfo?.pages ?: ZERO_NUMBER,
-            next = characterResponseInfo?.next ?: EMPTY_STRING,
-            count = characterResponseInfo?.count ?: ZERO_NUMBER,
-            prev = characterResponseInfo?.prev ?: EMPTY_STRING
+     private fun mapCharacterResponseForInfo(characterInfoResponse: CharacterInfoResponse? ) = CharacterInfo(
+            pages = characterInfoResponse?.pages ?: ZERO_NUMBER,
+            next = characterInfoResponse?.next ?: EMPTY_STRING,
+            count = characterInfoResponse?.count ?: ZERO_NUMBER,
+            prev = characterInfoResponse?.prev ?: EMPTY_STRING
     )
 
-    private fun mapLocationResponseForLocation(locationResponse: CharacterLocationResponse?) = CharacterLocation(
-        name = locationResponse?.name ?: EMPTY_STRING,
-        url = locationResponse?.url ?: EMPTY_STRING
+    private fun mapLocationResponseForLocation(characterLocationResponse: CharacterLocationResponse?) = CharacterLocation(
+        name = characterLocationResponse?.name ?: EMPTY_STRING,
+        url = characterLocationResponse?.url ?: EMPTY_STRING
     )
 
-    private fun mapResultResponseForResult(resultResponse: CharacterResultResponse?) = CharacterResult(
-        id = resultResponse?.id ?: ZERO_NUMBER,
-        created = resultResponse?.created ?: EMPTY_STRING,
-        episode = resultResponse?.episode ?: emptyList(),
-        gender = resultResponse?.gender ?: EMPTY_STRING,
-        image = resultResponse?.image ?: EMPTY_STRING,
-        name = resultResponse?.name ?: EMPTY_STRING,
-        species = resultResponse?.species ?: EMPTY_STRING,
-        status = resultResponse?.status ?: EMPTY_STRING,
-        type = resultResponse?.type ?: EMPTY_STRING,
-        url = resultResponse?.url ?: EMPTY_STRING,
-        location = mapLocationResponseForLocation(resultResponse?.location),
-        origin = mapOriginResponseForOrigin(resultResponse?.origin!!)
+    fun mapResultResponseForResult(characterResultResponse: CharacterResultResponse?) = CharacterResult(
+        id = characterResultResponse?.id ?: ZERO_NUMBER,
+        created = characterResultResponse?.created ?: EMPTY_STRING,
+        episode = characterResultResponse?.episode ?: emptyList(),
+        gender = characterResultResponse?.gender ?: EMPTY_STRING,
+        image = characterResultResponse?.image ?: EMPTY_STRING,
+        name = characterResultResponse?.name ?: EMPTY_STRING,
+        species = characterResultResponse?.species ?: EMPTY_STRING,
+        status = characterResultResponse?.status ?: EMPTY_STRING,
+        type = characterResultResponse?.type ?: EMPTY_STRING,
+        url = characterResultResponse?.url ?: EMPTY_STRING,
+        location = mapLocationResponseForLocation(characterResultResponse?.location),
+        origin = mapOriginResponseForOrigin(characterResultResponse?.origin!!)
     )
 
     private fun mapListCharacterResponseForResult(list: List<CharacterResultResponse>) = list.map{
@@ -60,20 +60,20 @@ class CharacterMapper @Inject constructor() {
         )
     }
 
-    fun mapCharacterResultDbForCharacterResult(characterResult: CharacterDbModel): CharacterResult{
+    fun mapCharacterResultDbForCharacterResult(characterDbModel: CharacterDbModel): CharacterResult{
         return CharacterResult(
-            created = characterResult.created,
-            id = characterResult.id,
-            status = characterResult.status,
-            name = characterResult.name,
-            species = characterResult.species,
-            image = characterResult.image,
-            location = CharacterLocation(characterResult.location,""),
-            url = characterResult.url,
-            type = characterResult.type,
+            created = characterDbModel.created,
+            id = characterDbModel.id,
+            status = characterDbModel.status,
+            name = characterDbModel.name,
+            species = characterDbModel.species,
+            image = characterDbModel.image,
+            location = CharacterLocation(characterDbModel.location,""),
+            url = characterDbModel.url,
+            type = characterDbModel.type,
             episode = emptyList(),
-            gender = characterResult.gender,
-            origin = CharacterOrigin(characterResult.origin,"")
+            gender = characterDbModel.gender,
+            origin = CharacterOrigin(characterDbModel.origin,"")
         )
     }
 
@@ -81,10 +81,10 @@ class CharacterMapper @Inject constructor() {
         mapCharacterResultForCharacterResultDb(it)
     }
 
-    private fun mapOriginResponseForOrigin(originDto: CharacterOriginResponse): CharacterOrigin {
+    private fun mapOriginResponseForOrigin(characterOriginResponse: CharacterOriginResponse): CharacterOrigin {
         return CharacterOrigin(
-            name = originDto.name,
-            url = originDto.url
+            name = characterOriginResponse.name,
+            url = characterOriginResponse.url
         )
     }
     companion object{

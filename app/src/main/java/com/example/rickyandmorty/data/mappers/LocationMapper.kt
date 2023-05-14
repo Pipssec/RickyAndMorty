@@ -28,7 +28,7 @@ class LocationMapper @Inject constructor() {
         url = resultResponse?.url ?: EMPTY_STRING
     )
 
-    fun mapListResultsResponseForListResults(list: List<LocationResultResponse>) = list.map {
+    private fun mapListResultsResponseForListResults(list: List<LocationResultResponse>) = list.map {
         mapResultsResponseForResults(it)
     }
 
@@ -37,7 +37,7 @@ class LocationMapper @Inject constructor() {
         results = mapListResultsResponseForListResults(locationResponse.results)
     )
 
-    private fun mapLocationResultResponseForLocationResultDb(locationResult: LocationResult): LocationDbModel {
+    private fun mapLocationResultForLocationResultDb(locationResult: LocationResult): LocationDbModel {
         return LocationDbModel (
             created = locationResult.created,
             dimension = locationResult.dimension,
@@ -50,18 +50,18 @@ class LocationMapper @Inject constructor() {
 
 
     fun mapListResultResponseForListDb(list: List<LocationResult>) = list.map {
-        mapLocationResultResponseForLocationResultDb(it)
+        mapLocationResultForLocationResultDb(it)
     }
 
-    fun mapLocationResultDbForLocationResult(locationResult: LocationDbModel): LocationResult{
+    fun mapLocationResultDbForLocationResult(locationDbModel: LocationDbModel): LocationResult{
         return LocationResult(
-            created = locationResult.created,
-            dimension = locationResult.dimension,
-            id = locationResult.id,
-            name = locationResult.name,
+            created = locationDbModel.created,
+            dimension = locationDbModel.dimension,
+            id = locationDbModel.id,
+            name = locationDbModel.name,
             residents = emptyList(),
-            type = locationResult.type,
-            url = locationResult.url
+            type = locationDbModel.type,
+            url = locationDbModel.url
         )
     }
     companion object {
