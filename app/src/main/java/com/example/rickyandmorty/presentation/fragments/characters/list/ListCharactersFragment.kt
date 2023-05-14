@@ -117,7 +117,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
                     null -> {}
                     is BackendException -> Toast.makeText(
                         requireContext(),
-                        "Данные не найдены",
+                        R.string.item_not_find,
                         Toast.LENGTH_LONG
                     ).show()
                     else -> Toast.makeText(

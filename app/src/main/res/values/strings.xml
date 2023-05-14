@@ -46,4 +46,5 @@
     <string name="Reset">Сброс</string>
     <string name="ex_location">Название локации</string>
     <string name="error_connect">Отсутствует интернет-соединение</string>
+    <string name="item_not_find">Данные не найдены</string>
 </resources>
