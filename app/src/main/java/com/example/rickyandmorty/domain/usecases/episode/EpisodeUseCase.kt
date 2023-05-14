@@ -12,8 +12,9 @@ class EpisodeUseCase @Inject constructor(
     private val application: Application
 ) {
     fun getEpisodes(name: String, episode: String): EpisodesDataSource {
-        return EpisodesDataSource(repository, application,name,episode)
+        return EpisodesDataSource(repository, application, name, episode)
     }
+
     fun getDetailCharacter(id: String): Observable<List<CharacterResult>> {
         return repository.getDetailCharacter(id)
     }

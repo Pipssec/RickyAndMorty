@@ -10,7 +10,7 @@ import com.example.rickyandmorty.domain.models.locations.LocationResult
 import com.example.rickyandmorty.domain.repository.LocationRepository
 import javax.inject.Inject
 
-class LocationDataSource@Inject constructor(
+class LocationDataSource @Inject constructor(
     private val repository: LocationRepository,
     private val application: Application,
     private val name: String,
@@ -23,15 +23,21 @@ class LocationDataSource@Inject constructor(
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, LocationResult> {
-       return try {
+        return try {
             var nextKey: Int? = 0
             val page = params.key ?: START_PAGE
             val responseData = if (hasConnected(application.applicationContext)) {
                 val response = repository.getLocation(page, name, type, dimension)
-                nextKey = if (response.info.next == null ) null else page + 1
+                nextKey = if (response.info.next == null) null else page + 1
                 response.results
             } else {
-                val listLocations = repository.getListLocationsDb((page-1) * params.loadSize, params.loadSize, name, type, dimension)
+                val listLocations = repository.getListLocationsDb(
+                    (page - 1) * params.loadSize,
+                    params.loadSize,
+                    name,
+                    type,
+                    dimension
+                )
                 nextKey = if (listLocations.isNotEmpty()) page + 1 else null
                 listLocations
             }
@@ -46,12 +52,12 @@ class LocationDataSource@Inject constructor(
         }
     }
 
-        override fun getRefreshKey(state: PagingState<Int, LocationResult>): Int? = null
+    override fun getRefreshKey(state: PagingState<Int, LocationResult>): Int? = null
 
-        private fun hasConnected(context: Context): Boolean {
-            val manager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val network = manager.activeNetworkInfo
-            return network != null && network.isConnected
-        }
+    private fun hasConnected(context: Context): Boolean {
+        val manager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = manager.activeNetworkInfo
+        return network != null && network.isConnected
     }
+}

@@ -2,6 +2,7 @@ package com.example.rickyandmorty.domain.usecases.location
 
 import android.app.Application
 import com.example.rickyandmorty.data.datasource.LocationDataSource
+import com.example.rickyandmorty.data.db.entity.location.LocationDbModel
 import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.models.locations.Location
 import com.example.rickyandmorty.domain.repository.LocationRepository
@@ -15,11 +16,16 @@ class LocationUseCase @Inject constructor(
     fun getLocation(name: String, type: String, dimension: String): LocationDataSource {
         return LocationDataSource(repository, application, name, type, dimension)
     }
-    fun getDetailCharacter(id: String): Observable<List<CharacterResult>>{
+
+    fun getDetailCharacter(id: String): Observable<List<CharacterResult>> {
         return repository.getDetailCharacter(id)
     }
 
-    fun getDetailLocation(name: String): Observable<Location>{
+    fun getDetailLocation(name: String): Observable<Location> {
         return repository.getDetailLocation(name)
+    }
+
+    fun getDetailLocationDb(name: String): Observable<List<LocationDbModel>> {
+        return repository.getDetailLocationDb(name)
     }
 }

@@ -23,11 +23,12 @@ import javax.inject.Inject
 
 class DetailEpisodesFragment() : Fragment(), DetailLocationCharacterAdapter.SelectListener {
     private lateinit var binding: FragmentEpisodeDetailBinding
+
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory;
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var episodesViewModel: EpisodesViewModel
     private val detailCharacterViewModel: DetailCharacterViewModel by activityViewModels()
-    lateinit var adapter : DetailLocationCharacterAdapter
+    lateinit var adapter: DetailLocationCharacterAdapter
 
     override fun onAttach(context: Context) {
         (requireActivity().application as App).appComponent.injectDetailEpisodesFragment(this)
@@ -40,7 +41,8 @@ class DetailEpisodesFragment() : Fragment(), DetailLocationCharacterAdapter.Sele
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEpisodeDetailBinding.inflate(inflater, container, false)
-        episodesViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[EpisodesViewModel::class.java]
+        episodesViewModel =
+            ViewModelProvider(requireActivity(), viewModelFactory)[EpisodesViewModel::class.java]
         return binding.root
     }
 
@@ -57,7 +59,7 @@ class DetailEpisodesFragment() : Fragment(), DetailLocationCharacterAdapter.Sele
         }
         episodesViewModel.getCharacters()
         episodesViewModel.fetchData()
-        episodesViewModel.responseCharacterResult.observe(viewLifecycleOwner){
+        episodesViewModel.responseCharacterResult.observe(viewLifecycleOwner) {
             adapter = DetailLocationCharacterAdapter(requireContext(), it, this)
             binding.rvDetailEpisodeCharacters.adapter = adapter
         }

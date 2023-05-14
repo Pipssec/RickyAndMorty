@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rickyandmorty.R;
 
 public class EpisodesViewHolder extends RecyclerView.ViewHolder {
-    TextView tvNameEpisode,tvNumberEpisode,tvAirDateEpisode;
+    TextView tvNameEpisode, tvNumberEpisode, tvAirDateEpisode;
 
     public EpisodesViewHolder(@NonNull View itemView) {
         super(itemView);

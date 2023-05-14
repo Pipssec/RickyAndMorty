@@ -9,15 +9,15 @@ import com.example.rickyandmorty.data.db.entity.location.LocationDbModel
 
 
 @Database(entities = [LocationDbModel::class], version = 2)
-abstract class LocationDatabase: RoomDatabase() {
+abstract class LocationDatabase : RoomDatabase() {
     abstract fun getLocationDao(): LocationDao
 
-    companion object{
+    companion object {
         private var database: LocationDatabase? = null
         private val ANY = Any()
 
         fun getMainDatabase(context: Context): LocationDatabase {
-            synchronized(ANY){
+            synchronized(ANY) {
                 database?.let {
                     return it
                 }

@@ -82,16 +82,18 @@ public class DetailLocationFragment extends Fragment implements DetailLocationCh
         detailLocationViewModel.getSelectedItemCharacter().observe(getViewLifecycleOwner(), observer);
         displayData();
         detailLocationViewModel.clearListOfCharacters();
-        binding.btnBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+        binding.btnBack.setOnClickListener(
+                v -> requireActivity().getSupportFragmentManager().popBackStack()
+
+        );
 
     }
 
 
     private void displayData() {
         detailLocationViewModel.getCharacters();
-            detailLocationViewModel.fetchData();
-        @SuppressLint("NotifyDataSetChanged")
-        final Observer<List<CharacterResult>> observer = listOfCharacters -> {
+        detailLocationViewModel.fetchData();
+        @SuppressLint("NotifyDataSetChanged") final Observer<List<CharacterResult>> observer = listOfCharacters -> {
             assert listOfCharacters != null;
             Log.d("listOfCharacters", listOfCharacters.toString());
             DetailLocationCharacterAdapter adapter = new DetailLocationCharacterAdapter(requireContext(), listOfCharacters, this);

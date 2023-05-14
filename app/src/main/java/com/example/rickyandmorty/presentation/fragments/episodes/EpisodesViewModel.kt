@@ -19,9 +19,9 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-class EpisodesViewModel@Inject constructor(
+class EpisodesViewModel @Inject constructor(
     private val episodeUseCase: EpisodeUseCase
-): ViewModel() {
+) : ViewModel() {
 
     val selectedItemLocation = MutableLiveData<EpisodeResult>()
     val responseCharacterResult = MutableLiveData<List<CharacterResult?>?>()
@@ -43,7 +43,7 @@ class EpisodesViewModel@Inject constructor(
         listOfCharacters.clear()
     }
 
-     fun fetchData() {
+    fun fetchData() {
         compositeDisposable.add(episodeUseCase.getDetailCharacter(charactersIds!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -55,13 +55,14 @@ class EpisodesViewModel@Inject constructor(
     }
 
     fun loadAllEpisodes(name: String, episode: String) {
-        episodeFlow = Pager(PagingConfig(pageSize = 10, enablePlaceholders = false, initialLoadSize = 10)) {
-            episodeUseCase.getEpisodes(name, episode)
-        }.flow.cachedIn(viewModelScope)
-            .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
+        episodeFlow =
+            Pager(PagingConfig(pageSize = 10, enablePlaceholders = false, initialLoadSize = 10)) {
+                episodeUseCase.getEpisodes(name, episode)
+            }.flow.cachedIn(viewModelScope)
+                .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
     }
 
-     fun getCharacters() {
+    fun getCharacters() {
         var str1: String
         var result = ""
         if (listOfCharacters.isNotEmpty()) {

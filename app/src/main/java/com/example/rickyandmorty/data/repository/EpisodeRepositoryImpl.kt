@@ -15,10 +15,10 @@ class EpisodeRepositoryImpl @Inject constructor(
     private val apiService: NetworkApi,
     private val episodeDao: EpisodeDao,
     private val mapper: EpisodeMapper
-): EpisodeRepository {
+) : EpisodeRepository {
 
     override suspend fun getEpisode(page: Int, name: String, episode: String): Episode {
-        val episodeApi = apiService.getAllEpisode(page,name,episode)
+        val episodeApi = apiService.getAllEpisode(page, name, episode)
         val listEpisodes = mapper.mapEpisodeResponseForEpisode(episodeApi)
         episodeDao.insertEpisode(mapper.mapListResultResponseForListDb(listEpisodes.results))
         return listEpisodes
@@ -28,12 +28,14 @@ class EpisodeRepositoryImpl @Inject constructor(
         episodeDao.insertEpisode(mapper.mapListResultResponseForListDb(list))
     }
 
-    override suspend fun getListEpisodesDb(offset: Int,
-                                   limit: Int,
-                                   name: String,
-                                   episode: String
+    override suspend fun getListEpisodesDb(
+        offset: Int,
+        limit: Int,
+        name: String,
+        episode: String
     ): List<EpisodeResult> {
-        return episodeDao.getAllEpisodesPage(offset, limit, name, episode).map(mapper::mapEpisodeResultDbForEpisodeResult)
+        return episodeDao.getAllEpisodesPage(offset, limit, name, episode)
+            .map(mapper::mapEpisodeResultDbForEpisodeResult)
     }
 
     override fun getDetailCharacter(id: String): Observable<List<CharacterResult>> {

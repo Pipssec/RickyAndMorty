@@ -18,19 +18,21 @@ class LocationMapper @Inject constructor() {
         prev = infoResponse?.prev ?: EMPTY_STRING,
     )
 
-    fun mapLocationResultsResponseForLocationResults(resultResponse: LocationResultResponse?) = LocationResult(
-        created = resultResponse?.created ?: EMPTY_STRING,
-        dimension = resultResponse?.dimension ?: EMPTY_STRING,
-        id = resultResponse?.id ?: ZERO_NUMBER,
-        name = resultResponse?.name ?: EMPTY_STRING,
-        residents = resultResponse?.residents ?: emptyList(),
-        type = resultResponse?.type ?: EMPTY_STRING,
-        url = resultResponse?.url ?: EMPTY_STRING
-    )
+    fun mapLocationResultsResponseForLocationResults(resultResponse: LocationResultResponse?) =
+        LocationResult(
+            created = resultResponse?.created ?: EMPTY_STRING,
+            dimension = resultResponse?.dimension ?: EMPTY_STRING,
+            id = resultResponse?.id ?: ZERO_NUMBER,
+            name = resultResponse?.name ?: EMPTY_STRING,
+            residents = resultResponse?.residents ?: emptyList(),
+            type = resultResponse?.type ?: EMPTY_STRING,
+            url = resultResponse?.url ?: EMPTY_STRING
+        )
 
-    private fun mapListResultsResponseForListResults(list: List<LocationResultResponse>) = list.map {
-        mapLocationResultsResponseForLocationResults(it)
-    }
+    private fun mapListResultsResponseForListResults(list: List<LocationResultResponse>) =
+        list.map {
+            mapLocationResultsResponseForLocationResults(it)
+        }
 
     fun mapLocationResponseForLocation(locationResponse: LocationResponse) = Location(
         info = mapInfoResponseForInfo(locationResponse.info),
@@ -38,7 +40,7 @@ class LocationMapper @Inject constructor() {
     )
 
     fun mapLocationResultForLocationModelDb(locationResult: LocationResult): LocationDbModel {
-        return LocationDbModel (
+        return LocationDbModel(
             created = locationResult.created,
             dimension = locationResult.dimension,
             id = locationResult.id,
@@ -53,7 +55,7 @@ class LocationMapper @Inject constructor() {
         mapLocationResultForLocationModelDb(it)
     }
 
-    fun mapLocationResultDbForLocationResult(locationDbModel: LocationDbModel): LocationResult{
+    fun mapLocationResultDbForLocationResult(locationDbModel: LocationDbModel): LocationResult {
         return LocationResult(
             created = locationDbModel.created,
             dimension = locationDbModel.dimension,
@@ -64,6 +66,7 @@ class LocationMapper @Inject constructor() {
             url = locationDbModel.url
         )
     }
+
     companion object {
         private const val EMPTY_STRING = ""
         private const val ZERO_NUMBER = 0

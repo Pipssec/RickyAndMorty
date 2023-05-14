@@ -2,6 +2,7 @@ package com.example.rickyandmorty.data.repository
 
 import com.example.rickyandmorty.data.api.NetworkApi
 import com.example.rickyandmorty.data.db.dao.LocationDao
+import com.example.rickyandmorty.data.db.entity.location.LocationDbModel
 import com.example.rickyandmorty.data.mappers.LocationMapper
 import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.models.locations.Location
@@ -14,7 +15,7 @@ class LocationRepositoryImpl @Inject constructor(
     private val apiService: NetworkApi,
     private val locationDao: LocationDao,
     private val mapper: LocationMapper
-): LocationRepository {
+) : LocationRepository {
 
     override suspend fun getLocation(
         page: Int,
@@ -33,13 +34,14 @@ class LocationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getListLocationsDb(
-                                    offset: Int,
-                                    limit: Int,
-                                    name: String,
-                                    type: String,
-                                    dimension: String
+        offset: Int,
+        limit: Int,
+        name: String,
+        type: String,
+        dimension: String
     ): List<LocationResult> {
-            return locationDao.getAllLocationPage(offset, limit, name, type, dimension).map(mapper::mapLocationResultDbForLocationResult)
+        return locationDao.getAllLocationPage(offset, limit, name, type, dimension)
+            .map(mapper::mapLocationResultDbForLocationResult)
     }
 
     override fun getDetailCharacter(id: String): Observable<List<CharacterResult>> {
@@ -48,5 +50,9 @@ class LocationRepositoryImpl @Inject constructor(
 
     override fun getDetailLocation(name: String): Observable<Location> {
         return apiService.getDetailLocation(name)
+    }
+
+    override fun getDetailLocationDb(name: String): Observable<List<LocationDbModel>> {
+        return locationDao.getLocationDb(name)
     }
 }

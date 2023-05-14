@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 
+import com.example.rickyandmorty.data.db.entity.location.LocationDbModel;
+import com.example.rickyandmorty.data.mappers.LocationMapper;
 import com.example.rickyandmorty.domain.models.character.CharacterResult;
 import com.example.rickyandmorty.domain.models.locations.Location;
 import com.example.rickyandmorty.domain.models.locations.LocationResult;
@@ -26,11 +28,15 @@ public class DetailLocationViewModel extends ViewModel {
     public List<String> listOfCharacters = new ArrayList<>();
     public String charactersIds;
     LocationUseCase locationUseCase;
+    LocationMapper locationMapper;
 
 
     @Inject
-    public DetailLocationViewModel(LocationUseCase locationUseCase){
+    public DetailLocationViewModel(
+            LocationUseCase locationUseCase,
+            LocationMapper locationMapper) {
         this.locationUseCase = locationUseCase;
+        this.locationMapper = locationMapper;
     }
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -43,10 +49,15 @@ public class DetailLocationViewModel extends ViewModel {
     }
 
 
-    public void setLocationName(String name){
+    public void setLocationName(String name) {
         locationName.setValue(name);
         fetchDataLocation();
 
+    }
+
+    public void setLocationNameIsNotConn(String name) {
+        locationName.setValue(name);
+        fetchDataLocationDb();
     }
 
     public void setResponseCharacter(List<CharacterResult> post) {
@@ -57,6 +68,17 @@ public class DetailLocationViewModel extends ViewModel {
     public void setResponseLocation(Location post) {
         selectedItemLocation.setValue(post.getResults().get(0));
         onClickItemCharacter(post.getResults().get(0));
+    }
+
+    public void setResponseLocationDb(LocationResult post) {
+        selectedItemLocation.setValue(post);
+        onClickItemCharacter(post);
+    }
+
+    public void converterType(List<LocationDbModel> list) {
+        LocationDbModel location = list.get(0);
+        LocationResult location1 = locationMapper.mapLocationResultDbForLocationResult(location);
+        setResponseLocationDb(location1);
     }
 
     public MutableLiveData<LocationResult> getSelectedItemCharacter() {
@@ -83,7 +105,13 @@ public class DetailLocationViewModel extends ViewModel {
                 }));
     }
 
-
+    void fetchDataLocationDb() {
+        compositeDisposable.add(locationUseCase.getDetailLocationDb(locationName.getValue())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::converterType, throwable -> {
+                }));
+    }
 
     public void getCharacters() {
         String str1;

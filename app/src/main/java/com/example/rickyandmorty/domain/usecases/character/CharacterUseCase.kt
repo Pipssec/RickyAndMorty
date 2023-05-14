@@ -11,11 +11,16 @@ class CharacterUseCase @Inject constructor(
     private val repository: CharacterRepositoryImpl,
     private val application: Application
 ) {
-    fun getCharacter(name: String, status: String, gender: String, species: String): CharacterDataSource {
-        return CharacterDataSource(repository,application,name, status,gender, species)
+    fun getCharacter(
+        name: String,
+        status: String,
+        gender: String,
+        species: String
+    ): CharacterDataSource {
+        return CharacterDataSource(repository, application, name, status, gender, species)
     }
 
-    fun getDetailEpisode(id: String): Observable<List<EpisodeResult>>{
+    fun getDetailEpisode(id: String): Observable<List<EpisodeResult>> {
         return repository.getDetailEpisode(id)
     }
 }

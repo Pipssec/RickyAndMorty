@@ -12,10 +12,12 @@ interface EpisodeRepository {
 
     suspend fun insertEpisode(list: List<EpisodeResult>)
 
-    suspend fun getListEpisodesDb(offset: Int,
-                          limit: Int,
-                          name: String,
-                          episode: String): List<EpisodeResult>
+    suspend fun getListEpisodesDb(
+        offset: Int,
+        limit: Int,
+        name: String,
+        episode: String
+    ): List<EpisodeResult>
 
     fun getDetailCharacter(id: String): Observable<List<CharacterResult>>
 }

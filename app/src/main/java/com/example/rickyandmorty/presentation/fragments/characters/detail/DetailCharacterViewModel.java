@@ -29,7 +29,7 @@ public class DetailCharacterViewModel extends ViewModel {
     @Inject
     public DetailCharacterViewModel(
             CharacterUseCase characterUseCase
-    ){
+    ) {
         this.characterUseCase = characterUseCase;
     }
 
@@ -42,7 +42,7 @@ public class DetailCharacterViewModel extends ViewModel {
 
     }
 
-    public void setListOfEpisodes(List<EpisodeResult> post){
+    public void setListOfEpisodes(List<EpisodeResult> post) {
         responseEpisodes.setValue(post);
     }
 

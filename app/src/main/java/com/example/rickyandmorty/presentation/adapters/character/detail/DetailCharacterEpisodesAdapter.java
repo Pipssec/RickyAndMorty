@@ -15,7 +15,6 @@ import com.example.rickyandmorty.domain.models.episodes.EpisodeResult;
 import java.util.List;
 
 
-
 public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<EpisodesViewHolder> {
     Context context;
     List<EpisodeResult> postsList;
@@ -32,7 +31,7 @@ public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<Episode
     @Override
     public EpisodesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_list_episodes,parent,false);
+                .inflate(R.layout.adapter_list_episodes, parent, false);
         return new EpisodesViewHolder(view);
     }
 
@@ -56,7 +55,7 @@ public class DetailCharacterEpisodesAdapter extends RecyclerView.Adapter<Episode
         return postsList.size();
     }
 
-    public interface EpisodeListener{
+    public interface EpisodeListener {
         void onItemClick(EpisodeResult episode);
     }
 }

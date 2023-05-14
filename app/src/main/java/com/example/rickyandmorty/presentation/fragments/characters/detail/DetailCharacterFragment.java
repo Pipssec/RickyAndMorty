@@ -1,6 +1,8 @@
 package com.example.rickyandmorty.presentation.fragments.characters.detail;
 
+
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -48,7 +51,6 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     RecyclerView recyclerEpisodesIntoCharacter;
     AppComponent component;
-
 
 
     @Override
@@ -87,7 +89,11 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
             binding.tvOriginDetailCharacter.setText(character1.getOrigin().getName());
             binding.tvLocationDetailCharacter.setText(character1.getLocation().getName());
             binding.tvOriginDetailCharacter.setOnClickListener(v -> {
-                detailLocationViewModel.setLocationName(character1.getOrigin().getName());
+                if (isNetworkConnected()) {
+                    detailLocationViewModel.setLocationName(character1.getOrigin().getName());
+                } else {
+                    detailLocationViewModel.setLocationNameIsNotConn(character1.getOrigin().getName());
+                }
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
@@ -96,7 +102,11 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
                         .commit();
             });
             binding.tvLocationDetailCharacter.setOnClickListener(v -> {
-                detailLocationViewModel.setLocationName(character1.getLocation().getName());
+                if (isNetworkConnected()) {
+                    detailLocationViewModel.setLocationName(character1.getLocation().getName());
+                } else {
+                    detailLocationViewModel.setLocationNameIsNotConn(character1.getLocation().getName());
+                }
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager
                         .beginTransaction()
@@ -148,5 +158,10 @@ public class DetailCharacterFragment extends Fragment implements DetailCharacter
                 .replace(R.id.containerFragment, new DetailEpisodesFragment())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

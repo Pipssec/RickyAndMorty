@@ -18,15 +18,16 @@ class EpisodeMapper @Inject constructor() {
         prev = infoResponse?.prev ?: EMPTY_STRING
     )
 
-    fun mapEpisodeResultsResponseForEpisodeResults(resultResponse: EpisodeResultResponse?) = EpisodeResult(
-        air_date = resultResponse?.air_date ?: EMPTY_STRING,
-        characters = resultResponse?.characters ?: emptyList(),
-        created = resultResponse?.created ?: EMPTY_STRING,
-        episode = resultResponse?.episode ?: EMPTY_STRING,
-        id = resultResponse?.id ?: ZERO_NUMBER,
-        name = resultResponse?.name ?: EMPTY_STRING,
-        url = resultResponse?.url ?: EMPTY_STRING
-    )
+    fun mapEpisodeResultsResponseForEpisodeResults(resultResponse: EpisodeResultResponse?) =
+        EpisodeResult(
+            air_date = resultResponse?.air_date ?: EMPTY_STRING,
+            characters = resultResponse?.characters ?: emptyList(),
+            created = resultResponse?.created ?: EMPTY_STRING,
+            episode = resultResponse?.episode ?: EMPTY_STRING,
+            id = resultResponse?.id ?: ZERO_NUMBER,
+            name = resultResponse?.name ?: EMPTY_STRING,
+            url = resultResponse?.url ?: EMPTY_STRING
+        )
 
     private fun mapListResultsResponseForListResults(list: List<EpisodeResultResponse>) = list.map {
         mapEpisodeResultsResponseForEpisodeResults(it)
@@ -38,7 +39,7 @@ class EpisodeMapper @Inject constructor() {
     )
 
     fun mapEpisodeResultForEpisodeResultDb(episodeResult: EpisodeResult): EpisodeDbModel {
-        return EpisodeDbModel (
+        return EpisodeDbModel(
             air_date = episodeResult.air_date,
             created = episodeResult.created,
             episode = episodeResult.episode,
@@ -47,11 +48,12 @@ class EpisodeMapper @Inject constructor() {
             url = episodeResult.url
         )
     }
+
     fun mapListResultResponseForListDb(list: List<EpisodeResult>) = list.map {
         mapEpisodeResultForEpisodeResultDb(it)
     }
 
-    fun mapEpisodeResultDbForEpisodeResult(episodeDbModel: EpisodeDbModel): EpisodeResult{
+    fun mapEpisodeResultDbForEpisodeResult(episodeDbModel: EpisodeDbModel): EpisodeResult {
         return EpisodeResult(
             air_date = episodeDbModel.air_date,
             characters = emptyList(),

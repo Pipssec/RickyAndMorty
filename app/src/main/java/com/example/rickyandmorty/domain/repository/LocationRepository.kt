@@ -1,5 +1,6 @@
 package com.example.rickyandmorty.domain.repository
 
+import com.example.rickyandmorty.data.db.entity.location.LocationDbModel
 import com.example.rickyandmorty.domain.models.character.CharacterResult
 import com.example.rickyandmorty.domain.models.locations.Location
 import com.example.rickyandmorty.domain.models.locations.LocationResult
@@ -13,15 +14,16 @@ interface LocationRepository {
     suspend fun insertLocation(list: List<LocationResult>)
 
     suspend fun getListLocationsDb(
-                            offset: Int,
-                            limit: Int,
-                            name: String,
-                            type: String,
-                            dimension: String
+        offset: Int,
+        limit: Int,
+        name: String,
+        type: String,
+        dimension: String
     ): List<LocationResult>
 
     fun getDetailCharacter(id: String): Observable<List<CharacterResult>>
 
     fun getDetailLocation(name: String): Observable<Location>
+    fun getDetailLocationDb(name: String): Observable<List<LocationDbModel>>
 
 }

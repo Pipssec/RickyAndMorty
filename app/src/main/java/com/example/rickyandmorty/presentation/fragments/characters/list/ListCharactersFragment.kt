@@ -1,7 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.characters.list
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +36,7 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
     private lateinit var viewModelList: ListCharactersViewModel
     private lateinit var viewModelDetail: DetailCharacterViewModel
     private var adapter = CharactersPagingAdapter(this)
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private var name: String = ""
@@ -55,8 +55,14 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
         savedInstanceState: Bundle?
     ): View? {
         bindingFilter = FragmentCharacterFilterBinding.inflate(inflater)
-        viewModelList = ViewModelProvider(requireActivity(), viewModelFactory)[ListCharactersViewModel::class.java]
-        viewModelDetail = ViewModelProvider(requireActivity(), viewModelFactory)[DetailCharacterViewModel::class.java]
+        viewModelList = ViewModelProvider(
+            requireActivity(),
+            viewModelFactory
+        )[ListCharactersViewModel::class.java]
+        viewModelDetail = ViewModelProvider(
+            requireActivity(),
+            viewModelFactory
+        )[DetailCharacterViewModel::class.java]
         binding = FragmentCharactersListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -212,20 +218,14 @@ class ListCharactersFragment : Fragment(), CharactersPagingAdapter.CharacterList
             .commit()
     }
 
-    private fun swipeRefresh(){
+    private fun swipeRefresh() {
         binding.swipeRefreshCharacters.setOnRefreshListener {
-            lifecycleScope.launch{
+            lifecycleScope.launch {
                 adapter.submitData(PagingData.empty())
                 viewModelList.characterFlow.collectLatest(adapter::submitData)
             }
             binding.swipeRefreshCharacters.isRefreshing = false
         }
-    }
-
-    private fun hasConnected(context: Context): Boolean{
-        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = manager.activeNetworkInfo
-        return network != null && network.isConnected
     }
 
 }

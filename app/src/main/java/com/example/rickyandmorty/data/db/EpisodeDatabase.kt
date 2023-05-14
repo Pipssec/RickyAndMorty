@@ -9,15 +9,15 @@ import com.example.rickyandmorty.data.db.entity.episode.EpisodeDbModel
 
 
 @Database(entities = [EpisodeDbModel::class], version = 1)
-abstract class EpisodeDatabase: RoomDatabase() {
+abstract class EpisodeDatabase : RoomDatabase() {
     abstract fun getEpisodeDao(): EpisodeDao
 
-    companion object{
+    companion object {
         private var database: EpisodeDatabase? = null
         private val ANY = Any()
 
         fun getMainDatabase(context: Context): EpisodeDatabase {
-            synchronized(ANY){
+            synchronized(ANY) {
                 database?.let {
                     return it
                 }

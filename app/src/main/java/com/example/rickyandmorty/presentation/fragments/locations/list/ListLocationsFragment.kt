@@ -1,7 +1,6 @@
 package com.example.rickyandmorty.presentation.fragments.locations.list
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +36,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
     private var adapter = LocationsPagingAdapter(this)
     private lateinit var listLocationsViewModel: ListLocationsViewModel
     private lateinit var detailLocationViewModel: DetailLocationViewModel
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
     private var name = ""
@@ -56,8 +56,14 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLocationsListBinding.inflate(inflater, container, false)
-        listLocationsViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[ListLocationsViewModel::class.java]
-        detailLocationViewModel = ViewModelProvider(requireActivity(), viewModelFactory)[DetailLocationViewModel::class.java]
+        listLocationsViewModel = ViewModelProvider(
+            requireActivity(),
+            viewModelFactory
+        )[ListLocationsViewModel::class.java]
+        detailLocationViewModel = ViewModelProvider(
+            requireActivity(),
+            viewModelFactory
+        )[DetailLocationViewModel::class.java]
         bindingFilter = FragmentLocationFilterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -77,9 +83,9 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
 
     }
 
-    private fun swipeRefresh(){
+    private fun swipeRefresh() {
         binding.swipeRefreshLocations.setOnRefreshListener {
-            lifecycleScope.launch{
+            lifecycleScope.launch {
                 adapter.submitData(PagingData.empty())
                 listLocationsViewModel.locationFlow.collectLatest(adapter::submitData)
             }
@@ -139,7 +145,7 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
                 val name = query.toString()
                 loadAllLocations(name)
                 return true
-                }
+            }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val name = newText.toString()
@@ -222,9 +228,5 @@ class ListLocationsFragment : Fragment(), LocationsPagingAdapter.LocationListene
             .addToBackStack("listLocation")
             .commit()
     }
-    private fun hasConnected(context: Context): Boolean{
-        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = manager.activeNetworkInfo
-        return network != null && network.isConnected
-    }
+
 }
