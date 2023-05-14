@@ -31,7 +31,7 @@ internal class EpisodeMapperTest{
             created = EPISODE_CREATED,
         )
 
-        val actualEpisodeResult : EpisodeResult = episodeMapper.mapResultsResponseForResults(episodeResultResponse)
+        val actualEpisodeResult : EpisodeResult = episodeMapper.mapEpisodeResultsResponseForEpisodeResults(episodeResultResponse)
 
         assertEquals(expectedEpisodeResult, actualEpisodeResult)
 

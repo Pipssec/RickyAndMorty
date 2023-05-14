@@ -18,7 +18,7 @@ class EpisodeMapper @Inject constructor() {
         prev = infoResponse?.prev ?: EMPTY_STRING
     )
 
-    fun mapResultsResponseForResults(resultResponse: EpisodeResultResponse?) = EpisodeResult(
+    fun mapEpisodeResultsResponseForEpisodeResults(resultResponse: EpisodeResultResponse?) = EpisodeResult(
         air_date = resultResponse?.air_date ?: EMPTY_STRING,
         characters = resultResponse?.characters ?: emptyList(),
         created = resultResponse?.created ?: EMPTY_STRING,
@@ -29,7 +29,7 @@ class EpisodeMapper @Inject constructor() {
     )
 
     private fun mapListResultsResponseForListResults(list: List<EpisodeResultResponse>) = list.map {
-        mapResultsResponseForResults(it)
+        mapEpisodeResultsResponseForEpisodeResults(it)
     }
 
     fun mapEpisodeResponseForEpisode(episodeResponse: EpisodeResponse) = Episode(
