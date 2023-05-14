@@ -44,7 +44,7 @@ class CharacterMapper @Inject constructor() {
     )
 
 
-    private fun mapCharacterResultResponseForCharacterResultDb(characterResult: CharacterResult): CharacterDbModel {
+    fun mapCharacterResultForCharacterResultDb(characterResult: CharacterResult): CharacterDbModel {
         return CharacterDbModel (
             id = characterResult.id,
             name = characterResult.name,
@@ -78,7 +78,7 @@ class CharacterMapper @Inject constructor() {
     }
 
     fun mapListResultResponseForListDb(list: List<CharacterResult>) = list.map {
-        mapCharacterResultResponseForCharacterResultDb(it)
+        mapCharacterResultForCharacterResultDb(it)
     }
 
     private fun mapOriginResponseForOrigin(originDto: CharacterOriginResponse): CharacterOrigin {
